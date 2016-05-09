@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+   <!-- Initialization for data source -->
+   <bean id="dataSource" 
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+      <property name="url" value="jdbc:mysql://localhost:3306/method_madness"/>
+      <property name="username" value="mmuser"/>
+      <property name="password" value="vtt6UYPH9ST8h9LW"/>
+   </bean>
+
+   <!-- Definition for methodJDBCTemplate bean -->
+   <bean id="methodJDBCTemplate" 
+      class="uk.co.methodical.database.MethodJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+   
+   <!-- Definition for towerJDBCTemplate bean -->
+   <bean id="towerJDBCTemplate" 
+      class="uk.co.methodical.database.TowerJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+   
+   <!-- Definition for compositionJDBCTemplate bean -->
+   <bean id="compositionJDBCTemplate" 
+      class="uk.co.methodical.database.CompositionJDBCTemplate">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+   
+      
+</beans>

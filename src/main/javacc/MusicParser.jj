@@ -1,0 +1,84 @@
+
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = true;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(MusicParser)
+package uk.co.methodical.parser;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+public class MusicParser {
+
+  public static Map<String, String> parse(String input) throws ParseException {
+  		InputStream in = new ByteArrayInputStream(input.getBytes());
+  		Map<String, String> music_definitions = new HashMap<String, String>();
+  		
+  		MusicParser parser = new MusicParser(in);
+  		
+  		while (parser.Input(music_definitions)) {};		
+		try {
+			in.close();
+		} catch (IOException e) {
+			// Should not happen as just using ByteArrayInputStream
+			e.printStackTrace();
+		}
+		
+		return music_definitions;
+  }
+  
+}
+
+PARSER_END(MusicParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN :
+{
+  < NAME: "\"" ( ["a"-"z","A"-"Z","_"," ","0"-"9"] )+ "\"" >
+|
+  < SEARCHSTRING: ( ["^","$","*",".","E","T","0"-"9"] )+ >
+
+}
+
+
+/** Root production. */
+boolean Input(Map<String, String> music_definitions) :
+{ 
+  Token name; 
+  Token value;
+}
+{
+  name=<NAME> "=" value=<SEARCHSTRING> { System.out.println("Found music with ID " + name.image + ", and SEARCHSTRING " + value.image);  music_definitions.put(value.image, name.image); return true; }
+  |
+  <EOF> { return false; }  
+}

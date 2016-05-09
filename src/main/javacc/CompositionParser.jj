@@ -1,0 +1,120 @@
+
+
+options {
+  LOOKAHEAD = 1;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = true;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = false;
+}
+
+PARSER_BEGIN(CompositionParser)
+package uk.co.methodical.parser;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import uk.co.methodical.database.MethodNotFoundException;
+import uk.co.methodical.parser.Dictionary.DictionaryException;
+
+/** Simple brace matcher. */
+public class CompositionParser {
+
+  public static Dictionary parse(String input) throws ParseException, DictionaryException, MethodNotFoundException {
+  		InputStream in = new ByteArrayInputStream(input.getBytes());
+  		Dictionary d = new Dictionary();
+  		
+  		CompositionParser parser = new CompositionParser(in);
+  		
+  		while (parser.Input(d)) {};		
+		try {
+			in.close();
+		} catch (IOException e) {
+			// Should not happen as just using ByteArrayInputStream
+			e.printStackTrace();
+		}
+		
+		return d;
+  }
+  
+  /** Main entry point. */
+  /*public static void main(String args[]) throws ParseException {
+  		InputStream in;
+		try {
+			in = new FileInputStream(args[0]);
+			CompositionParser parser = new CompositionParser(in);
+    		while (parser.Input()) {};		
+			in.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    
+  } */
+
+}
+
+PARSER_END(CompositionParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN :
+{
+  < CALL: "CALL" > 
+|
+  < METHOD: "METHOD" >
+|
+  < PART: "PART" >
+|
+  < COMPOSITION: "COMPOSITION" >
+|
+  < ID: ["a"-"z","A"-"Z","_"] ( ["a"-"z","A"-"Z","_","0"-"9"] )* >
+|
+  < NOTATION: ( ["X","E","T","0"-"9", ".", ","] )+ >
+|
+  < NAME: "\"" ( ["a"-"z","A"-"Z","_"," ","0"-"9", "'"] )+ "\"" >
+}
+
+
+/** Root production. */
+boolean Input(Dictionary d) throws DictionaryException, MethodNotFoundException :
+{ 
+  Token name; 
+  Token value;
+  Dictionary dictionary = d;
+}
+{
+  <CALL> name=<ID> "=" value=<NOTATION> { System.out.println("Found CALL with ID " + name.image + ", and notation " + value.image);  d.addCall(name.image, value.image); return true; }
+  | 
+  <METHOD> name=<ID> "=" value=<NAME> { String method_name = value.image.replaceAll("^\\\"|\\\"$", ""); System.out.println("Found METHOD with ID " + name.image + ", and name " + method_name); d.addMethod(name.image, value.image); return true; }
+  | 
+  <PART> name=<ID> { d.addPart(name.image); } "=" "{" ( value=<ID> { System.out.println("Found PART with ID " + name.image + ", and CALL " + value.image); d.addItemToPart(name.image, value.image); } )+ "}"  { return true; }
+  |
+  <COMPOSITION> { d.addPart("COMPOSITION"); } "=" "{" ( value=<ID> { System.out.println("Found COMPOSITION with CALL " + value.image); d.addItemToPart("COMPOSITION", value.image); } )+ "}"  { return true; }
+  |
+  <EOF> { return false; }
+  
+}

@@ -1,0 +1,12 @@
+<form class="form-horizontal">
+	<div class="form-group">
+		<label class="col-md-4 control-label">Save As</label>
+		<div class="col-md-8">
+			<input id="compositionname" name="compositionname" type="text"
+				placeholder="Composition Name" class="form-control input-md"></input>
+
+			<span class="help-block">Enter the name of the composition here</span>
+		</div>
+	</div>
+</form>
+	

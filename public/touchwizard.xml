@@ -1,0 +1,62 @@
+<div class="row">
+	<div class=" col-md-12">
+		<div class="input-append">
+
+			<form class="form-inline">
+				<div class="col-md-10 input-group">
+					<input id="method-name" type="text" class="form-control input-md  "
+						oninput="updateDropdown()" placeholder="Enter Method Name..."></input>
+					<span data-toggle="dropdown"
+						class="input-group-addon btn btn-primary dropdown-toggle">
+						<span class="caret"></span>
+					</span>
+
+					<ul id="method-dropdown" class="dropdown-menu"></ul>
+				</div>
+				<button type="button" class="btn btn-primary"
+					onClick="addMethodName()">Add</button>
+			</form>
+		</div>
+		<br />
+
+		<form class="form-horizontal">
+
+			<div class="form-group form-vertical">
+				<div class="col-md-10">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Selected Methods</h3>
+						</div>
+						<div class="panel-body" id="selected-methods-list">
+							<select style="height:100px; width:100%;" class="no-scroll"
+								multiple="true"></select>
+						</div>
+					</div>
+				</div>
+				<button type="button" class="btn 
+					btn-primary col-md-2"
+					onClick="removeMethodName()">Remove</button>
+
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-4 control-label">Bob Place Notation</label>
+				<div class="col-md-8">
+					<input id="bobnotation" name="bobnotation" type="text"
+						placeholder="14" class="form-control input-md" value="14"></input>
+
+					<span class="help-block">Enter the bob\'s place notation here</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-4 control-label">Single Place Notation</label>
+				<div class="col-md-8">
+					<input id="singlenotation" name="singlenotation" type="text"
+						placeholder="1234" class="form-control input-md" value="1234"></input>
+					<span class="help-block">Enter the single\'s place notation here</span>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
