@@ -39,6 +39,7 @@ import uk.co.methodical.parser.Dictionary.DictionaryException;
 import uk.co.methodical.xml.CCFileImporter;
 
 @RestController
+/*@RequestMapping("/ws")*/
 public class MethodsController {
 
 	private final AtomicLong counter = new AtomicLong();

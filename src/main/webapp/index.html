@@ -146,7 +146,7 @@
 	}
 
 	function searchMethods(parameters) {
-		var ws = createWebServiceURI('./getMethodByTitle', parameters);
+		var ws = createWebServiceURI('./ws/getMethodByTitle', parameters);
 
 		callWebService(
 				function(resultset) {
@@ -193,7 +193,7 @@
 
 	function loadComposition(compositionId) {
 
-		var ws = createWebServiceURI('./getComposition', {
+		var ws = createWebServiceURI('./ws/getComposition', {
 			id : compositionId
 		});
 
@@ -205,7 +205,7 @@
 
 	function saveComposition() {
 		var title = document.getElementById('compositionname').value;
-		var ws = createWebServiceURI('./saveComposition', {
+		var ws = createWebServiceURI('./ws/saveComposition', {
 			title : title
 		});
 
@@ -274,7 +274,7 @@
 			"music" : music,
 			"stopAtRounds" : stopAtRounds
 		});
-		callPutWebService(handleResponse, errorResponse, "./parse",
+		callPutWebService(handleResponse, errorResponse, "./ws/parse",
 				data_string, 'application/json');
 
 	}
