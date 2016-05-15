@@ -18,6 +18,24 @@
 							<warName>ROOT</warName>
 						</configuration>
 					</plugin>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<delete file="${project.build.outputDirectory}/DataSource.xml" />
+										<copy file="src/main/resources/OpenShiftDataSource.xml"
+											tofile="${project.build.outputDirectory}/DataSource.xml" />
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 

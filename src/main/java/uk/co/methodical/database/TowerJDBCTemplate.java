@@ -17,10 +17,11 @@ public class TowerJDBCTemplate implements TowerDAO {
 
 		if (self == null) {
 			ApplicationContext context = new ClassPathXmlApplicationContext(
-					"Beans.xml");
-
-			self = (TowerJDBCTemplate) context.getBean("towerJDBCTemplate");
-
+					"DataSource.xml");
+			
+			self = new TowerJDBCTemplate();
+			self.setDataSource((DataSource) context.getBean("dataSource"));
+			
 			((AbstractApplicationContext) context).registerShutdownHook();
 		}
 		return self;

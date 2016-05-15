@@ -20,10 +20,11 @@ public class CompositionJDBCTemplate implements CompositionDAO {
 	public static CompositionJDBCTemplate instance() {
 
 		if (self == null) {
-			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			ApplicationContext context = new ClassPathXmlApplicationContext("DataSource.xml");
 
-			self = (CompositionJDBCTemplate) context.getBean("compositionJDBCTemplate");
-
+			self = new CompositionJDBCTemplate();
+			self.setDataSource((DataSource) context.getBean("dataSource"));
+			
 			((AbstractApplicationContext) context).registerShutdownHook();
 		}
 		return self;

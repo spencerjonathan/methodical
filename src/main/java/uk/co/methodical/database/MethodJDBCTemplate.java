@@ -20,10 +20,11 @@ public class MethodJDBCTemplate implements MethodDAO {
 	public static MethodJDBCTemplate instance() {
 
 		if (self == null) {
-			ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+			ApplicationContext context = new ClassPathXmlApplicationContext("DataSource.xml");
 
-			self = (MethodJDBCTemplate) context.getBean("methodJDBCTemplate");
-
+			self = new MethodJDBCTemplate();
+			self.setDataSource((DataSource) context.getBean("dataSource"));
+			
 			((AbstractApplicationContext) context).registerShutdownHook();
 		}
 		return self;
