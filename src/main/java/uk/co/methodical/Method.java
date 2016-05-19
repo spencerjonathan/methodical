@@ -118,5 +118,11 @@ public class Method extends Item {
 	public void applyYourselfTo(Touch touch) throws TouchException {
 		touch.addMethod(this);
 	}
+	
+	@Override
+	public Integer affectMaxStage(Integer max_stage) {
+		if (number_of_bells > max_stage) return number_of_bells;
+		else return max_stage;
+	}
 
 }

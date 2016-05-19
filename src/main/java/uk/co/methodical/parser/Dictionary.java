@@ -12,6 +12,11 @@ import uk.co.methodical.database.MethodNotFoundException;
 public class Dictionary {
 
 	private HashMap<String, Item> dictionary;
+	private Integer max_stage = 0;
+	
+	public Integer getMax_stage() {
+		return max_stage;
+	}
 
 	public class DictionaryException extends Exception {
 
@@ -58,14 +63,7 @@ public class Dictionary {
 		if (item == null)
 			throw new DictionaryException("Could not find definition for " + item_id);
 
-		/*
-		 * if (part_item.getClass().getName() != "Part") throw new
-		 * DictionaryException("Cannot add " + item_id + " to " + id +
-		 * " because it is not a PART");
-		 */
-
-		// Part part = (Part)part_item;
-
+		max_stage = item.affectMaxStage(max_stage);
 		part_item.add(item);
 
 	}
@@ -75,7 +73,6 @@ public class Dictionary {
 	}
 
 	public Set<String> keySet() {
-		// TODO Auto-generated method stub
 		return dictionary.keySet();
 	}
 }

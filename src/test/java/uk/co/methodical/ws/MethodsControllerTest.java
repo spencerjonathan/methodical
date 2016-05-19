@@ -74,15 +74,42 @@ public class MethodsControllerTest extends BaseTest {
 
 		request.setComposition(composition);
 		request.setMusic(music);
-	
+
 		TouchListItem response = null;
 
 		request.setStopAtRounds(false);
 		response = (TouchListItem) controller.parse(request);
-		Assert.assertEquals("MethodsController can create a touch that doesn't stop at rounds", response.getTouch_length(), 96);
-		
+		Assert.assertEquals("MethodsController can create a touch that doesn't stop at rounds",
+				response.getTouch_length(), 96);
+
 		request.setStopAtRounds(true);
 		response = (TouchListItem) controller.parse(request);
-		Assert.assertEquals("MethodsController can create a touch that does stop at rounds", response.getTouch_length(), 36);
+		Assert.assertEquals("MethodsController can create a touch that does stop at rounds", response.getTouch_length(),
+				36);
+	}
+
+	@Test
+	@Category(uk.co.methodical.IntegrationTests.class)
+	public void methodsControllerCanCreateTouchWithDifferentStages() {
+		MethodsController controller = new MethodsController();
+
+		ParseRequest request = new ParseRequest();
+
+		String composition = "METHOD M1 = \"St Simon's Bob Doubles\" \nMETHOD M2 = \"Plain Bob Minor\" \nCALL B = 14\nCOMPOSITION = { M1 P M2 P}";
+		String music = "\"Queens\" = 135246\n\"Titums\" = 142536\n\"Rollup\" = 456$";
+
+		request.setComposition(composition);
+		request.setMusic(music);
+
+		TouchListItem response = null;
+
+		response = (TouchListItem) controller.parse(request);
+
+		Lead[] leads = response.getLeads();
+
+		//System.out.println("Bell order is " + leads[1].getBell_order());
+		Assert.assertTrue("MethodsController can create touch of St Simon's Doubles and Plain Bob Minor",
+				leads[2].getBell_order().equals("123465"));
+
 	}
 }

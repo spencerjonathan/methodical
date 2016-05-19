@@ -93,6 +93,46 @@ public class LEFactoryTest extends BaseTest {
 		Assert.assertTrue("Can create LeadEnd in a doubles method with a bob", LeadEnd.isRounds(created_le.getBell_order()));
 
 	}
+
+	@Test
+	public void canGenerateALeadWithLowerStageWithoutCall() {
+		int [] start_position = {1, 3, 5, 2, 4, 6};
+		Method st_simons_doubles = createStSimonsDoublesMethod();
+
+		//Call bob = new Call("B", "14");
+		
+		LeadEnd start = new LeadEnd(start_position, null, null);
+		LeadEnd created_le = null;
+		try {
+			created_le = LEFactory.createLE(start, st_simons_doubles, null, null, false, true);
+		} catch (UnusedCall e) {
+			// Do Nothing
+		}
+
+		Assert.assertNotNull("Can create LeadEnd from a previous one with more bells that comes round", created_le);
+		Assert.assertTrue("Can create LeadEnd from a previous one with more bells that comes round", LeadEnd.isRounds(created_le.getBell_order()));
+
+	}
+	
+	@Test
+	public void canGenerateALeadWithLowerStageWithCall() {
+		int [] start_position = {1, 4, 5, 3, 2, 6};
+		Method st_simons_doubles = createStSimonsDoublesMethod();
+
+		Call bob = new Call("B", "14");
+		
+		LeadEnd start = new LeadEnd(start_position, null, null);
+		LeadEnd created_le = null;
+		try {
+			created_le = LEFactory.createLE(start, st_simons_doubles, null, bob, false, true);
+		} catch (UnusedCall e) {
+			// Do Nothing
+		}
+
+		Assert.assertNotNull("Can create LeadEnd from a previous one with more bells that comes round with a bob", created_le);
+		Assert.assertTrue("Can create LeadEnd from a previous one with more bells that comes round with a bob", LeadEnd.isRounds(created_le.getBell_order()));
+
+	}
 	
 	@Test
 	public void canGenerateALeadWithoutACall() {

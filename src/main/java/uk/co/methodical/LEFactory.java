@@ -1,6 +1,7 @@
 package uk.co.methodical;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LEFactory {
 
@@ -14,13 +15,16 @@ public class LEFactory {
 		return le;
 	}
 
-	private static int[] generateNextStrokeOrder(int[] previous_bell_order, int[] static_positions) {
-		int[] new_order = new int[previous_bell_order.length];
+	private static int[] generateNextStrokeOrder(int[] previous_bell_order, int[] static_positions, int stage) {
+		int[] new_order;// = new int[previous_bell_order.length];
 
+		// Copy previous as a starting position in case different stage from previous lead
+		new_order = Arrays.copyOf(previous_bell_order, previous_bell_order.length);
+		
 		int s = 0; // Static positions iterator
 		boolean swap_with_previous = false;
 
-		for (int i = 0; i < new_order.length; ++i) {
+		for (int i = 0; i < stage; ++i) {
 			if (s < static_positions.length && (static_positions[s] == i + 1)) {
 
 				// This is a static position, so carry forward the bell in this
@@ -85,7 +89,7 @@ public class LEFactory {
 		if (previous_call != null) {
 			static_positions = previous_call.getNotationNextLead();
 			for (int i = 0; i < static_positions.size(); ++i) {
-				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i));
+				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
 				rows.add(temp_bell_order);
 				if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds)
 					return rows;
@@ -96,7 +100,7 @@ public class LEFactory {
 		// Generate the rows in the lead excluding those impacted by a call
 		static_positions = method.getNotation();
 		for (int i = first_strokes_affected; i < static_positions.size() - strokes_affected; ++i) {
-			temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i));
+			temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
 			rows.add(temp_bell_order);
 			if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds) {
 				if (call != null && exception_on_unused_call)
@@ -110,7 +114,7 @@ public class LEFactory {
 		if (call != null) {
 			static_positions = call.getNotation();
 			for (int i = 0; i < static_positions.size(); ++i) {
-				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i));
+				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
 				rows.add(temp_bell_order);
 				if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds)
 					return rows;

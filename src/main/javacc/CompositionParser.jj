@@ -31,7 +31,6 @@ import java.io.ByteArrayInputStream;
 import uk.co.methodical.database.MethodNotFoundException;
 import uk.co.methodical.parser.Dictionary.DictionaryException;
 
-/** Simple brace matcher. */
 public class CompositionParser {
 
   public static Dictionary parse(String input) throws ParseException, DictionaryException, MethodNotFoundException {

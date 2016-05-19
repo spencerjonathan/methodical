@@ -54,9 +54,13 @@ public class Touch {
 		this.number_of_bells = touch.getNumber_of_bells();
 	}
 
-	public Touch(boolean stopAtRounds) {
+	public Touch(Integer stage, boolean stopAtRounds) {
 		this();
-		this.stopAtRounds = stopAtRounds; 
+		this.stopAtRounds = stopAtRounds;
+		
+		LeadEnd le = LEFactory.createLE(stage);
+		lead_ends.add(le);
+		this.number_of_bells = stage;
 	}
 
 	public void addLeadEnd(LeadEnd new_lead_end) {

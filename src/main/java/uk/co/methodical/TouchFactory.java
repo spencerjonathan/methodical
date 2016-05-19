@@ -17,7 +17,6 @@ public class TouchFactory {
 	}
 
 	public Touch createPlainCourse(int method_id) {
-		//int bell_number = 6;
 		
 		Method method = MethodLibrary.instance().method(method_id);
 		Method[] method_list = new Method[1];
@@ -30,9 +29,9 @@ public class TouchFactory {
 
 	}
 	
-	public Touch createTouch(Item composition, boolean stopAtRounds) throws TouchException {
+	public Touch createTouch(Item composition, Integer stage, boolean stopAtRounds) throws TouchException {
 
-		Touch touch = new Touch(stopAtRounds);
+		Touch touch = new Touch(stage, stopAtRounds);
 		
 		for (Iterator<Item> i = composition.iterator(); i.hasNext();) {
 			Item item = i.next();

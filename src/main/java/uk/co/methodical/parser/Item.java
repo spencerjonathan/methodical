@@ -29,4 +29,8 @@ public abstract class Item {
 
 	abstract public void applyYourselfTo(Touch touch) throws TouchException;
 
+	public Integer affectMaxStage(Integer max_stage) {
+		return max_stage;
+	}
+
 }

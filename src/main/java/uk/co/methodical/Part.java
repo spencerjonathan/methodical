@@ -8,6 +8,7 @@ import uk.co.methodical.parser.Item;
 public class Part extends Item {
 
 	ArrayList<Item> items;
+	//private int max_stage = 0;
 
 	public class PartIterator implements Iterator<Item> {
 
@@ -98,7 +99,12 @@ public class Part extends Item {
 		items.add(item);
 
 	}
-
+	
+/*	public void add(Item item, int stage) {
+		items.add(item);
+		if (stage > max_stage) max_stage = stage;
+	}
+*/
 	@Override
 	public void applyYourselfTo(Touch touch) throws TouchException {
 		// Should never be executed

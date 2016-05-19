@@ -193,7 +193,7 @@ public class MethodsController {
 		TouchFactory touchFactory = new TouchFactory();
 		Touch touch;
 		try {
-			touch = touchFactory.createTouch(comp, request.isStopAtRounds());
+			touch = touchFactory.createTouch(comp, composition_dictionary.getMax_stage(), request.isStopAtRounds()); 
 		} catch (TouchException e) {
 
 			e.printStackTrace();
