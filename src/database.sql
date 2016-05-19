@@ -19,14 +19,16 @@ SET time_zone = "+00:00";
 --
 -- Database: `method_madness`
 --
-CREATE DATABASE IF NOT EXISTS `method_madness` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `method_madness`;
+-- CREATE DATABASE IF NOT EXISTS `method_madness` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `methodical` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+-- USE `method_madness`;
+USE `methodical`;
 
 DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddComposition`(IN `p_title` VARCHAR(50), IN `p_author` VARCHAR(50), IN `p_composition` LONGTEXT)
+CREATE PROCEDURE `AddComposition`(IN `p_title` VARCHAR(50), IN `p_author` VARCHAR(50), IN `p_composition` LONGTEXT)
     NO SQL
 BEGIN
 
@@ -46,7 +48,7 @@ BEGIN
   
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddMethod`(IN `p_ccId` VARCHAR(15), IN `p_name` VARCHAR(100), IN `p_classification` VARCHAR(20), IN `p_plain` BOOLEAN, IN `p_title` VARCHAR(150), IN `p_notation` VARCHAR(100), IN `p_leadHead` VARCHAR(20), IN `p_methodSetId` INT, IN `p_little` BOOLEAN)
+CREATE PROCEDURE `AddMethod`(IN `p_ccId` VARCHAR(15), IN `p_name` VARCHAR(100), IN `p_classification` VARCHAR(20), IN `p_plain` BOOLEAN, IN `p_title` VARCHAR(150), IN `p_notation` VARCHAR(100), IN `p_leadHead` VARCHAR(20), IN `p_methodSetId` INT, IN `p_little` BOOLEAN)
     NO SQL
 BEGIN 
 	
@@ -71,7 +73,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddMethodSet`(IN `p_stage` TINYINT UNSIGNED, IN `p_lengthOfLead` SMALLINT UNSIGNED, IN `p_numberOfHunts` TINYINT UNSIGNED, IN `p_huntBellPath` VARCHAR(100), IN `p_symmetry` VARCHAR(50))
+CREATE PROCEDURE `AddMethodSet`(IN `p_stage` TINYINT UNSIGNED, IN `p_lengthOfLead` SMALLINT UNSIGNED, IN `p_numberOfHunts` TINYINT UNSIGNED, IN `p_huntBellPath` VARCHAR(100), IN `p_symmetry` VARCHAR(50))
     NO SQL
     DETERMINISTIC
 begin
@@ -97,7 +99,7 @@ and symmetry=p_symmetry;
 
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AddTower`(IN `p_city` VARCHAR(30), IN `p_county` VARCHAR(30), IN `p_country` VARCHAR(30), IN `p_designation` VARCHAR(100), IN `p_bells` INT, IN `p_notes` VARCHAR(200))
+CREATE PROCEDURE `AddTower`(IN `p_city` VARCHAR(30), IN `p_county` VARCHAR(30), IN `p_country` VARCHAR(30), IN `p_designation` VARCHAR(100), IN `p_bells` INT, IN `p_notes` VARCHAR(200))
     NO SQL
 BEGIN 
 	
@@ -114,7 +116,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetCompositionById`(IN `p_id` INT)
+CREATE PROCEDURE `GetCompositionById`(IN `p_id` INT)
     NO SQL
 BEGIN
 
@@ -125,7 +127,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetFavouriteMethods`(IN `p_partialTitle` VARCHAR(50), IN `p_numberOfBells` INT, IN `p_userId` INT)
+CREATE PROCEDURE `GetFavouriteMethods`(IN `p_partialTitle` VARCHAR(50), IN `p_numberOfBells` INT, IN `p_userId` INT)
     NO SQL
 BEGIN
 
@@ -152,7 +154,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetMethod`(IN `p_id` INT UNSIGNED)
+CREATE PROCEDURE `GetMethod`(IN `p_id` INT UNSIGNED)
     NO SQL
 begin
 
@@ -185,7 +187,7 @@ begin
 
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetMethodByTitle`(IN `p_title` VARCHAR(50), IN `p_userId` INT)
+CREATE PROCEDURE `GetMethodByTitle`(IN `p_title` VARCHAR(50), IN `p_userId` INT)
     NO SQL
 BEGIN
 
@@ -211,7 +213,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetMethods`(IN `p_partialTitle` VARCHAR(50), IN `p_numberOfBells` INT UNSIGNED, IN `p_userId` INT)
+CREATE PROCEDURE `GetMethods`(IN `p_partialTitle` VARCHAR(50), IN `p_numberOfBells` INT UNSIGNED, IN `p_userId` INT)
     NO SQL
     DETERMINISTIC
 BEGIN
@@ -239,7 +241,7 @@ BEGIN
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SetFavouriteMethod`(IN `p_userid` INT UNSIGNED, IN `p_methodid` INT UNSIGNED, IN `p_favourite` BOOLEAN)
+CREATE PROCEDURE `SetFavouriteMethod`(IN `p_userid` INT UNSIGNED, IN `p_methodid` INT UNSIGNED, IN `p_favourite` BOOLEAN)
     NO SQL
 begin
 
