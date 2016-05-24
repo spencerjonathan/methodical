@@ -8,19 +8,19 @@ public class LEFactory {
 	public static LeadEnd createLE(LeadEnd previous, Method method, Call previous_call, Call call,
 			boolean exception_on_unused_call, boolean stop_at_rounds) throws UnusedCall {
 
-		LeadEnd le = new LeadEnd(
-				generateLEOrder(previous.getBell_order(), method, previous_call, call, exception_on_unused_call, stop_at_rounds),
-				method, call);
+		LeadEnd le = new LeadEnd(generateLEOrder(previous.getBell_order(), method, previous_call, call,
+				exception_on_unused_call, stop_at_rounds), method, call);
 
 		return le;
 	}
 
 	private static int[] generateNextStrokeOrder(int[] previous_bell_order, int[] static_positions, int stage) {
-		int[] new_order;// = new int[previous_bell_order.length];
+		int[] new_order;
 
-		// Copy previous as a starting position in case different stage from previous lead
+		// Copy previous as a starting position in case different stage from
+		// previous lead
 		new_order = Arrays.copyOf(previous_bell_order, previous_bell_order.length);
-		
+
 		int s = 0; // Static positions iterator
 		boolean swap_with_previous = false;
 
@@ -72,57 +72,82 @@ public class LEFactory {
 		// it does in the next)
 		int strokes_affected = 0;
 		int first_strokes_affected = 0;
-		if (call != null) {
-
-			strokes_affected = call.getNotation().size();
-			// strokes_affected = Math.round((new
-			// Float(call.getNotation().size()) + 1) / 2);
-			// if (call.getNotation().size() == 0) strokes_affected = 0;
-		}
-
-		if (previous_call != null) {
-			first_strokes_affected = previous_call.getNotationNextLead().size();
-		}
 
 		// Generate the rows at the start of the lead which are impacted by a
 		// call at the end of the previous lead
 		if (previous_call != null) {
+
+			first_strokes_affected = previous_call.getNotationNextLead().size();
 			static_positions = previous_call.getNotationNextLead();
-			for (int i = 0; i < static_positions.size(); ++i) {
-				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
-				rows.add(temp_bell_order);
-				if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds)
-					return rows;
+
+			if (createRowsForCall(temp_bell_order, rows, method.getNumber_of_bells(), static_positions,
+					stop_at_rounds)) {
+
+				return rows;
 			}
 
+			if (rows.size() > 0) {
+				temp_bell_order = rows.get(rows.size() - 1);
+			}
+
+		}
+
+		if (call != null) {
+			strokes_affected = call.getNotation().size();
 		}
 
 		// Generate the rows in the lead excluding those impacted by a call
-		static_positions = method.getNotation();
-		for (int i = first_strokes_affected; i < static_positions.size() - strokes_affected; ++i) {
-			temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
-			rows.add(temp_bell_order);
-			if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds) {
-				if (call != null && exception_on_unused_call)
-					throw new UnusedCall();
-				else
-					return rows;
-			}
-		}
+		if (createRowsForBody(temp_bell_order, rows, first_strokes_affected, strokes_affected, method, call,
+				stop_at_rounds, exception_on_unused_call))
+			return rows;
 
 		// Generate the rows at the end of the lead which are impacted by a call
 		if (call != null) {
-			static_positions = call.getNotation();
-			for (int i = 0; i < static_positions.size(); ++i) {
-				temp_bell_order = generateNextStrokeOrder(temp_bell_order, static_positions.get(i), method.getNumber_of_bells());
-				rows.add(temp_bell_order);
-				if (LeadEnd.isRounds(temp_bell_order) && stop_at_rounds)
-					return rows;
-			}
-
+			if (createRowsForCall(rows.get(rows.size() - 1), rows, method.getNumber_of_bells(), call.getNotation(),
+					stop_at_rounds))
+				return rows;
 		}
 
 		return rows;
+	}
+
+	private static boolean createRowsForBody(int[] current_bell_order, ArrayList<int[]> rows,
+			Integer first_strokes_affected, Integer strokes_affected, Method method, Call call, boolean stop_at_rounds,
+			boolean exception_on_unused_call) throws UnusedCall {
+
+		// Generate the rows in the lead excluding those impacted by a call
+		ArrayList<int[]> static_positions = method.getNotation();
+		for (int i = first_strokes_affected; i < static_positions.size() - strokes_affected; ++i) {
+
+			current_bell_order = generateNextStrokeOrder(current_bell_order, static_positions.get(i),
+					method.getNumber_of_bells());
+
+			rows.add(current_bell_order);
+
+			if (LeadEnd.isRounds(current_bell_order) && stop_at_rounds) {
+				if (call != null && exception_on_unused_call)
+					throw new UnusedCall();
+				else
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean createRowsForCall(int[] current_bell_order, ArrayList<int[]> rows, Integer stage,
+			ArrayList<int[]> static_positions, boolean stop_at_rounds) {
+
+		for (int i = 0; i < static_positions.size(); ++i) {
+
+			current_bell_order = generateNextStrokeOrder(current_bell_order, static_positions.get(i), stage);
+			rows.add(current_bell_order);
+
+			if (LeadEnd.isRounds(current_bell_order) && stop_at_rounds)
+				return true;
+		}
+
+		return false;
 	}
 
 	public static LeadEnd createLE(int bell_number) {

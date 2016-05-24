@@ -107,7 +107,6 @@ public class MethodsControllerTest extends BaseTest {
 
 		Lead[] leads = response.getLeads();
 
-		//System.out.println("Bell order is " + leads[1].getBell_order());
 		Assert.assertTrue("MethodsController can create touch of St Simon's Doubles and Plain Bob Minor",
 				leads[2].getBell_order().equals("123465"));
 
