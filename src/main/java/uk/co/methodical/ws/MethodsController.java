@@ -220,6 +220,14 @@ public class MethodsController {
 		
 	}
 
+	@RequestMapping("/getCompositionByTitle")
+	public Composition[] getCompositionByTitle(@RequestParam(value = "searchString", required = true) String searchString) {
+
+		List<Composition> methods = CompositionJDBCTemplate.instance().getCompositionsByTitle("%" + searchString + "%");
+		return (Composition[]) methods.toArray(new Composition[methods.size()]);
+	}
+
+	
 	@RequestMapping(value = "/importTowers")
 	public void importTowers(@RequestParam(value = "fileName") String fileName) throws IOException {
 

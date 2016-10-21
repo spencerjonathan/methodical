@@ -13,8 +13,7 @@
 
 					<ul id="method-dropdown" class="dropdown-menu"></ul>
 				</div>
-				<button type="button" class="btn btn-primary"
-					onClick="addMethodName()">Add</button>
+				<button id="add-method-name" type="button" class="btn btn-primary">Add</button>
 			</form>
 		</div>
 		<br />
@@ -33,7 +32,7 @@
 						</div>
 					</div>
 				</div>
-				<button type="button" class="btn 
+				<button id="remove-method-name" type="button" class="btn 
 					btn-primary col-md-2"
 					onClick="removeMethodName()">Remove</button>
 

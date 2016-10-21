@@ -84,4 +84,13 @@ public class CompositionJDBCTemplate implements CompositionDAO {
 
 	}
 
+	public List<Composition> getCompositionsByTitle(String title) {
+		title = title.replaceAll("^\"|\"$", "");
+		System.out.println("Searching for compositions with the title: " + title);
+		String SQL = "call GetCompositionByTitle(?)";
+		List<Composition> compositions = jdbcTemplateObject.query(SQL, new Object[] { title },
+				new CompositionMapper());
+		return compositions;
+	}
+
 }

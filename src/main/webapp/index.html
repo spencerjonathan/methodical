@@ -26,7 +26,13 @@
 <script src="./bootstrap-3.3.0/dist/js/bootstrap.min.js"></script>
 <script src="./angular.min.js"></script>
 <script src="bootbox.js"></script>
+
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script src="SubmitButton.js"></script>
+<script src="SaveButton.js"></script>
+<script src="UserAlert.js"></script>
+<script src="TouchWizard.js"></script>
 
 <script>
 	function onSignIn(googleUser) {
@@ -66,19 +72,6 @@
 
 	}
 
-	var drawList = function(list, htmlElement) {
-		var innerHTML = '<select id="method-select-list" style="height:100px; width:100%;" class="no-scroll" multiple="true">';
-
-		list.forEach(function(method) {
-
-			innerHTML += '<option>' + method + '</option>';
-
-		});
-
-		console.log(innerHTML);
-		htmlElement.innerHTML = innerHTML;
-	}
-
 	function createWebServiceURI(url, params) {
 
 		var first = true;
@@ -110,87 +103,6 @@
 
 	var g_method_list = [];
 
-	function setSearchText(text) {
-		document.getElementById("method-name").value = text;
-	}
-
-	function addMethodName() {
-		var name = document.getElementById('method-name').value;
-
-		g_method_list.forEach(function(method) {
-			if (name == method)
-				return;
-		});
-
-		g_method_list.push(name);
-
-		drawMethodList();
-
-		document.getElementById('method-name').value = "";
-	}
-
-	function removeMethodName() {
-		var select_list = document.getElementById("method-select-list");
-		var name = select_list.options[select_list.selectedIndex].text;
-
-		var new_list = [];
-
-		g_method_list.forEach(function(method) {
-			if (name != method)
-				new_list.push(method);
-		});
-
-		g_method_list = new_list;
-
-		drawMethodList();
-	}
-
-	function searchMethods(parameters) {
-		var ws = createWebServiceURI(urlPrefix + 'getMethodByTitle', parameters);
-
-		callWebService(
-				function(resultset) {
-					var obj = JSON.parse(resultset);
-
-					var innerHTML = "";
-					obj
-							.forEach(function(method) {
-
-								method = method.replace(/'/g, "\\'");
-								innerHTML += '<li style="cursor:pointer" onclick="setSearchText(\''
-										+ method + '\');">' + method + '</li>';
-
-							});
-
-					console.log(innerHTML);
-					document.getElementById("method-dropdown").innerHTML = innerHTML;
-
-				}, ws);
-
-		return g_method_list;
-	}
-
-	function drawMethodList() {
-		drawList(g_method_list, document
-				.getElementById("selected-methods-list"));
-	}
-
-	function generateTouch() {
-		var touch = "";
-
-		var method_number = 0;
-		g_method_list.forEach(function(method) {
-			touch += 'METHOD M' + ++method_number + ' = "' + method + '"\n'
-		});
-		touch += "\nCALL B = " + document.getElementById('bobnotation').value
-				+ "\n";
-		touch += "CALL S = " + document.getElementById('singlenotation').value
-				+ "\n";
-		touch += "\nPART P1 = { P P P P P }\nCOMPOSITION = { M1 P1 }";
-
-		document.getElementById('input').value = touch;
-	}
-
 	function loadComposition(compositionId) {
 
 		var ws = createWebServiceURI(urlPrefix + 'getComposition', {
@@ -209,22 +121,41 @@
 		loadComposition(g_composition_id)
 	}
 
+	var g_compositionPanel;
+
 	function openCompositionDialog() {
 		callWebService(function(result) {
-			dialogWizard("Save Composition", result, function() {
-			}, "Open", openComposition);
+			dialogWizard("Open Composition", result, function() {
+			}, "Open", function() {
+				var list = document
+						.getElementById('composition-select-list');
+				g_composition_id = list.options[list.selectedIndex].id;
+				openComposition();
+			});
+
+			g_compositionPanel = new CompositionPanel(document
+					.getElementById('compPanel'), document
+					.getElementById('compHeading'), document
+					.getElementById('compBody'));
+
 		}, "./loadcomposition.xml");
 	}
 
 	function findCompositions() {
 		var title = document.getElementById('findcompositionname').value;
-		var ws = createWebServiceURI(urlPrefix + 'saveComposition', {
-			title : title
+		var ws = createWebServiceURI(urlPrefix + 'getCompositionByTitle', {
+			searchString : title
 		});
 
 		callWebService(function(result) {
 			var obj = JSON.parse(result);
-			document.getElementById('input').value = obj.composition;
+
+			/* obj.foreach(function(composition) {
+				
+			}) */
+			g_compositionPanel.draw(obj);
+
+			//document.getElementById('input').value = obj.composition;
 		}, ws);
 	}
 
@@ -271,32 +202,6 @@
 		document.getElementById("composition_table").innerHTML = innerHTML;
 	}
 
-	function saveComposition() {
-		var title = document.getElementById('compositionname').value;
-		var ws = createWebServiceURI(urlPrefix + 'saveComposition', {
-			title : title
-		});
-
-		var composition_string = document.getElementById("input").value;
-
-		callPutWebService(handleSaveResponse, errorResponse, ws,
-				composition_string, 'text/html');
-	}
-
-	function saveCompositionDialog() {
-		callWebService(function(result) {
-			dialogWizard("Save Composition", result, function() {
-			}, "Save", saveComposition);
-		}, "./savecomposition.xml");
-	}
-
-	function touchWizard() {
-		callWebService(function(result) {
-			dialogWizard("Touch Wizard", result, drawMethodList, "Generate",
-					generateTouch);
-		}, "./touchwizard.xml");
-	}
-
 	function dialogWizard(title, bodyHTML, drawFunction, submitLabel,
 			submitFunction) {
 
@@ -332,80 +237,6 @@
 
 	}
 
-	var SubmitButton = function(p_submitButton, p_composition_input,
-			p_music_input, p_stopAtRounds_input, p_touch_output,
-			p_music_output, p_repetition_output) {
-
-		var handleResponse = function(responseText) {
-
-			var touch = JSON.parse(responseText);
-			if (touch.exception) {
-				document.getElementById("warning").innerHTML = "<strong>Warning!</strong> "
-						+ touch.message;
-				document.getElementById("warning").style.display = "block";
-				document.getElementById("success").style.display = "none";
-			} else {
-				p_touch_output.draw(touch);
-				p_repetition_output.draw(touch);
-				p_music_output.draw(touch);
-				document.getElementById("warning").style.display = "none";
-				document.getElementById("success").style.display = "none";
-			}
-		};
-
-		function errorResponse(responseText) {
-			var error = JSON.parse(responseText);
-			document.getElementById("warning").innerHTML = "<strong>Warning!</strong> "
-					+ error.message;
-			document.getElementById("warning").style.display = "block";
-			document.getElementById("success").style.display = "none";
-		}
-
-		var onClick = function(event) {
-			var data_string = JSON.stringify({
-				"composition" : p_composition_input.value,
-				"music" : p_music_input.value,
-				"stopAtRounds" : p_stopAtRounds_input.checked
-			});
-
-			callPutWebService(handleResponse, errorResponse, urlPrefix
-					+ "parse", data_string, 'application/json');
-		};
-
-		p_submitButton.onclick = onClick;
-
-	};
-
-	function handleSaveResponse(responseText) {
-
-		var response = JSON.parse(responseText);
-		if (response > 0) {
-			document.getElementById("success").innerHTML = "<strong>Composition Saved!</strong> ";
-			document.getElementById("success").style.display = "block";
-			document.getElementById("warning").style.display = "none";
-		} else {
-			document.getElementById("warning").innerHTML = "<strong>Composition Saved!</strong> ";
-			document.getElementById("warning").style.display = "block";
-			document.getElementById("success").style.display = "none";
-		}
-
-	}
-
-
-
-	function updateDropdown() {
-		console.log("In updateDropdown()")
-
-		var string_length = $('#method-name').val().length;
-
-		if (string_length > 3) {
-			searchMethods({
-				searchString : $('#method-name').val()
-			});
-
-		}
-	}
-
 	var urlPrefix = "ws/";
 
 	function autoload() {
@@ -417,12 +248,12 @@
 			objURL[$1] = $3;
 		});
 
-		if (objURL["composition"] != null) {
-			loadComposition(objURL["composition"]);
-		}
-
 		if (objURL["embedded"] != null) {
 			urlPrefix = "";
+		}
+
+		if (objURL["composition"] != null) {
+			loadComposition(objURL["composition"]);
 		}
 
 	}
@@ -455,9 +286,9 @@
 	function TouchPanel(p_panel, p_heading, p_body) {
 		GenericPanel.call(this, p_panel, p_heading, p_body);
 	};
-	
+
 	TouchPanel.prototype = Object.create(GenericPanel.prototype);
-	
+
 	TouchPanel.prototype.draw = function(touch) {
 		var touchTitle = "";
 		var touchPanelClass = "panel panel-success";
@@ -495,11 +326,11 @@
 		this.setBody(innerHTML);
 		this.setHeading(touchTitle);
 	}
-	
+
 	function MusicPanel(p_panel, p_heading, p_body) {
 		GenericPanel.call(this, p_panel, p_heading, p_body);
 	};
-	
+
 	MusicPanel.prototype = Object.create(GenericPanel.prototype);
 
 	MusicPanel.prototype.draw = function(touch) {
@@ -518,16 +349,15 @@
 		});
 		innerHTML += "</table>";
 
-		//document.getElementById("musicPanelBody").innerHTML = innerHTML;
 		this.setBody(innerHTML);
 	}
 
 	function RepetitionPanel(p_panel, p_heading, p_body) {
 		GenericPanel.call(this, p_panel, p_heading, p_body);
 	};
-	
+
 	RepetitionPanel.prototype = Object.create(GenericPanel.prototype);
-	
+
 	RepetitionPanel.prototype.draw = function(touch) {
 
 		var innerHTML = '<table class="table"><thead><tr><th>Change</th><th>First Lead</th><th>First Lead Change Number</th><th>First Lead Stroke</th><th>Second Lead</th><th>Second Lead Change Number</th><th>Second Lead Stroke</th></tr></thead><tbody>';
@@ -554,9 +384,40 @@
 		innerHTML += "</table>";
 
 		this.setBody(innerHTML);
-		//document.getElementById("repetitionPanelBody").innerHTML = innerHTML;
 	}
-	
+
+	function CompositionPanel(p_panel, p_heading, p_body) {
+		GenericPanel.call(this, p_panel, p_heading, p_body);
+	};
+
+	CompositionPanel.prototype = Object.create(GenericPanel.prototype);
+
+	CompositionPanel.prototype.draw = function(compositions) {
+
+		var innerHTML = '<select id="composition-select-list" style="height:100px; width:100%;" class="no-scroll" multiple="false">';
+
+		compositions.forEach(function(comp) {
+
+			innerHTML += '<option id="' + comp.id + '">' + comp.title + '</option>';
+
+		});
+
+		console.log(innerHTML);
+		//htmlElement.innerHTML = innerHTML;
+
+		/* 		var innerHTML = '<table class="table"><tbody>';
+
+		 compositions.forEach(function(comp) {
+		 //innerHTML += 'Test';
+		 innerHTML += '<tr><td style="cursor:pointer" onclick="setSelect(';
+		 innerHTML += comp.id + ')\">';
+		 innerHTML += comp.title + '</td></tr>';
+
+		 });
+		 innerHTML += "</table>";
+		 */
+		this.setBody(innerHTML);
+	}
 </script>
 
 <body role="document" onload="autoload()">
@@ -575,24 +436,16 @@
 			</div>
 		</div>
 
-
 	</nav>
 
-
 	<br>
 	<br>
-
 	<br>
 	<br>
 	<div class="col-sm-12">
-		<div id="warning" style="display: none"
-			class="col-sm-12 alert alert-warning" role="alert">
-			<strong>Warning!</strong> Best check yo self, you're not looking too
-			good.
-		</div>
 
-		<div id="success" style="display: none"
-			class="col-sm-12 alert alert-success" role="alert">
+		<div id="alert" style="display: none"
+			class="col-sm-12 alert alert-warning" role="alert">
 			<strong>Warning!</strong> Best check yo self, you're not looking too
 			good.
 		</div>
@@ -604,10 +457,10 @@
 
 				</div>
 				<div class="panel-body">
-					<button type="button" class="btn btn-sm btn-primary"
-						onClick="touchWizard()">Touch Wizard &raquo;</button>
-					<button type="button" class="btn btn-sm btn-primary"
-						title="Save Composition" onClick="saveCompositionDialog()">
+					<button id="touch_wizard_button" type="button"
+						class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
+					<button id="save_button" type="button"
+						class="btn btn-sm btn-primary" title="Save Composition">
 						<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
 						Save
 					</button>
@@ -617,7 +470,7 @@
 						Open
 					</button>
 					<button type="button" class="btn btn-sm btn-primary" id="submit"
-						title="Submit Composition" onClick="submit()">
+						title="Submit Composition">
 						<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 						Submit
 					</button>
@@ -676,26 +529,39 @@
 </body>
 
 <script>
-	var g_touchPanel = new TouchPanel(document.getElementById("touchPanel"),
-			document.getElementById("touchHeading"), document
-					.getElementById("touchPanelBody"));
+	var init = function() {
+		var g_touchPanel = new TouchPanel(
+				document.getElementById("touchPanel"), document
+						.getElementById("touchHeading"), document
+						.getElementById("touchPanelBody"));
 
-	var g_musicPanel = new MusicPanel(document.getElementById("musicPanel"),
-			document.getElementById("musicHeading"), document
-					.getElementById("musicPanelBody"));
-	
-	var g_repetitionPanel = new RepetitionPanel(document.getElementById("repetitionPanel"),
-			document.getElementById("repetitionHeading"), document
-					.getElementById("repetitionPanelBody"));
-	
-	var g_submitButton = new SubmitButton(document.getElementById("submit"),
-			document.getElementById("input"), document
-					.getElementById("music-input"), document
-					.getElementById("stop-at-rounds"), g_touchPanel,
-			//document.getElementById("touchPanelBody"),
-			g_musicPanel, //document.getElementById("musicPanelBody"),
-			g_repetitionPanel
-			//document.getElementById("repetitionPanelBody")
-			);
+		var g_musicPanel = new MusicPanel(
+				document.getElementById("musicPanel"), document
+						.getElementById("musicHeading"), document
+						.getElementById("musicPanelBody"));
+
+		var g_repetitionPanel = new RepetitionPanel(document
+				.getElementById("repetitionPanel"), document
+				.getElementById("repetitionHeading"), document
+				.getElementById("repetitionPanelBody"));
+
+		var g_userAlert = new UserAlert(document.getElementById("alert"));
+
+		var g_submitButton = new SubmitButton(
+				document.getElementById("submit"), document
+						.getElementById("input"), document
+						.getElementById("music-input"), document
+						.getElementById("stop-at-rounds"), g_touchPanel,
+				g_musicPanel, g_repetitionPanel, g_userAlert);
+
+		var g_touchWizard = new TouchWizard(document
+				.getElementById("touch_wizard_button"));
+
+		var g_saveButton = new SaveButton(document
+				.getElementById("save_button"), g_userAlert);
+
+	};
+
+	init();
 </script>
 </html>

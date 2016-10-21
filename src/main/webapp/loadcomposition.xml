@@ -1,0 +1,24 @@
+
+<div>
+	<form class="form-inline">
+		<div class="col-md-10 input-group">
+
+			<input id="findcompositionname" name="findcompositionname"
+				type="text" placeholder="Composition Name" class="form-control input-md"></input>
+			<!-- <span class="help-block">Enter the name of the composition here </span> -->
+		</div>
+		<button type="button" class="btn btn-sm btn-primary" onclick="findCompositions()">
+			Find
+		</button>
+	</form>
+	<br />
+	<div id="compPanel" class="panel panel-primary ">
+		<div id="compHeading" class="panel-heading">
+			<h3 class="panel-title">Compositions Found</h3>
+		</div>
+		<div id="compBody" class="panel-body">
+			<select style="height:100px; width:100%;" class="no-scroll"
+				multiple="true"></select>
+		</div>
+	</div>
+</div>
