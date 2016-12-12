@@ -1,0 +1,8 @@
+echo "Removing previous deployment"
+sudo rm -rf /var/lib/tomcat7/webapps/methodical /var/lib/tomcat7/webapps/methodical.war 
+
+echo "Copying new war"
+sudo cp target/methodical-1.0.0.war /var/lib/tomcat7/webapps/methodical.war
+
+echo "Restarting Tomcat"
+sudo service tomcat7 restart
