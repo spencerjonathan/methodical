@@ -8,7 +8,7 @@
    <bean id="dataSource" 
       class="org.springframework.jdbc.datasource.DriverManagerDataSource">
       <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-      <property name="url" value="jdbc:mysql://localhost:3306/method_madness"/>
+      <property name="url" value="jdbc:mysql://localhost:3306/methodical"/>
       <property name="username" value="mmuser"/>
       <property name="password" value="vtt6UYPH9ST8h9LW"/>
    </bean>
