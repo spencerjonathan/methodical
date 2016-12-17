@@ -43,7 +43,7 @@ public class TouchTest extends BaseTest {
 
 		Assert.assertTrue("Calling standard 120 of Plain Bob Minor comes round", touch.comesRound());
 		Assert.assertFalse("Calling standard 120 of Plain Bob Minor does not contain repetition",
-				touch.isRepetitious());
+				touch.getRepetitiveChanges().length > 0);
 		Assert.assertTrue("Touch can identify its own length", touch.getLength() == 120);
 
 		HashMap<String, String> music_definitions = new HashMap<String, String>();

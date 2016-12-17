@@ -19,14 +19,10 @@ public class Touch {
 	private long uid = -1;
 	private static long next_uid = 1;
 	private int number_of_bells;
-
-	private boolean isTrue = true;
 	private boolean comesRound = false;
-	private boolean isRepetitious = false;
 	private boolean stopAtRounds = true;
 
 	private Method method = null;
-
 	private Call previous_call = null;
 
 	public Touch() {
@@ -101,21 +97,7 @@ public class Touch {
 	}
 	
 	public boolean isRepetition(LeadEnd new_le) {
-		// TODO Auto-generated method stub
-		Iterator<LeadEnd> i = lead_ends.iterator();
-
-		// Ignore the first record because this is just rounds
-		if (i.hasNext())
-			i.next();
-
-		for (; i.hasNext();) {
-			LeadEnd le = i.next();
-
-			if (le.equals(new_le))
-				return true;
-		}
-
-		return false;
+		return getRepetitiveChanges().length > 0;
 	}
 
 	public LeadEnd getLastLeadEnd() {
@@ -177,8 +159,6 @@ public class Touch {
 		try {
 			LeadEnd new_lead_end = LEFactory.createLE(previous, method, previous_call, call, false, stopAtRounds);
 			comesRound = new_lead_end.isRounds();
-			if (isRepetition(new_lead_end))
-				isRepetitious = true;
 
 			this.addLeadEnd(new_lead_end);
 
@@ -203,20 +183,11 @@ public class Touch {
 
 	}
 
-	public boolean isTrue() {
-		return isTrue;
-	}
-
 	public boolean comesRound() {
 		return comesRound;
 	}
 
-	public boolean isRepetitious() {
-		return isRepetitious;
-	}
-
 	public Map<String, Integer> getMusicalQualities(Map<String, String> music_definitions) {
-		// TODO Auto-generated method stub
 		Map<String, Integer> musical_qualities = new HashMap<String, Integer>();
 		
 		// Discard the first LeadEnd

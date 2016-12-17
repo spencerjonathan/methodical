@@ -37,11 +37,10 @@ public class TouchListItem extends ReturnItem {
 			this.music[music_no++] = new Music(key, musical_qualities.get(key)); 
 		}
 		
-		setIs_repetitious(touch.isRepetitious());
 		setComes_round(touch.comesRound());
 		
 		setRepetitive_changes(touch.getRepetitiveChanges());
-		
+		setIs_repetitious(repetitive_changes.length > 0);
 		setException(false);
 	}
 
@@ -54,7 +53,6 @@ public class TouchListItem extends ReturnItem {
 	}
 
 	public TouchListItem(Touch touch) {
-		// TODO Auto-generated constructor stub
 		this(touch, null);
 	}
 
