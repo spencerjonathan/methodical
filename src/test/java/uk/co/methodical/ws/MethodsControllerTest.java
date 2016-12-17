@@ -81,6 +81,10 @@ public class MethodsControllerTest extends BaseTest {
 		response = (TouchListItem) controller.parse(request);
 		Assert.assertEquals("MethodsController can create a touch that doesn't stop at rounds",
 				response.getTouch_length(), 96);
+		
+		Assert.assertTrue(
+				"MethodsController can sees repetition in a repetitious touch",
+				response.isRepetitious());
 
 		request.setStopAtRounds(true);
 		response = (TouchListItem) controller.parse(request);
