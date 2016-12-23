@@ -1,8 +1,17 @@
 package uk.co.methodical;
 
 import uk.co.methodical.Method;
+import uk.co.methodical.ws.MethodListItem;
 
 public class BaseTest {
+	
+	protected Integer Id = 20;
+	protected String name = "Test Name";
+	protected Integer number_of_bells = 8;
+	protected String place_notation = "Test Notation";
+	protected String bob_place_notation = "Test Bob Notation";
+	protected String single_place_notation = "Test Single Notation";
+	protected boolean favourite = true;
 	
 	protected Method createPlainBobMinorMethod() {
 		Method plain_bob_minor = new Method();
@@ -29,5 +38,10 @@ public class BaseTest {
 		grandsire_doubles.setNotation("5.1.5.3.5.3.5.1.5.125");
 		
 		return grandsire_doubles;
+	}
+	
+	protected MethodListItem createMethodListItem() {
+		return new MethodListItem(Id, name, number_of_bells, place_notation, bob_place_notation,
+				single_place_notation, favourite);
 	}
 }

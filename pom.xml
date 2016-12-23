@@ -145,6 +145,9 @@
 					<targetClasses>
 						<param>uk.co.methodical.*</param>
 					</targetClasses>
+					<excludedClasses>
+						<param>uk.co.methodical.parser.*</param>
+					</excludedClasses>
 					<targetTests>
 						<param>uk.co.methodical.*</param>
 					</targetTests>

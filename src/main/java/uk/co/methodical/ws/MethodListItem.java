@@ -81,6 +81,18 @@ public class MethodListItem {
 	public void setNumber_of_bells(Integer number_of_bells) {
 		this.number_of_bells = number_of_bells;
 	}
+	
+	public boolean equals(MethodListItem mli) {
+		if (this.getName() != mli.getName()) return false;
+		if (this.getNumber_of_bells() != mli.getNumber_of_bells()) return false;
+		if (this.getBob_notation() != mli.getBob_notation()) return false;
+		if (this.getSingle_notation() != mli.getSingle_notation()) return false;
+		if (this.getPlace_notation() != mli.getPlace_notation()) return false;
+		if (this.getId() != mli.getId()) return false;
+		if (this.isFavourite() != mli.isFavourite()) return false;
+		
+		return true;
+	}
 
     
 }

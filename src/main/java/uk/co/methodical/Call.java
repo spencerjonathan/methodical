@@ -22,15 +22,8 @@ public class Call extends Item {
 		notation_string = null;
 	}
 
-	/*
-	 * public Call(String name, ArrayList<int[]> arrayList) {
-	 * this.setName(name); this.setNotation(arrayList); }
-	 */
-
 	public Call(String name, String place_notation) {
-		// TODO Auto-generated constructor stub
 		this.setName(name);
-		// this.notation_string = place_notation;
 		this.setNotation(place_notation);
 		notation = new ArrayList<int[]>();
 		notation_next_lead = new ArrayList<int[]>();

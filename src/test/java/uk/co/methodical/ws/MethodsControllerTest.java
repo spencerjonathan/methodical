@@ -1,5 +1,6 @@
 package uk.co.methodical.ws;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,17 +9,47 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import uk.co.methodical.BaseTest;
-import uk.co.methodical.IntegrationTests;
-import uk.co.methodical.TouchException;
-import uk.co.methodical.database.MethodNotFoundException;
-import uk.co.methodical.parser.ParseException;
-import uk.co.methodical.parser.Dictionary.DictionaryException;
 import uk.co.methodical.ws.MethodsController;
 import uk.co.methodical.ws.Music;
 import uk.co.methodical.ws.ParseRequest;
 import uk.co.methodical.ws.TouchListItem;
 
 public class MethodsControllerTest extends BaseTest {
+
+	
+	
+	@Test
+	@Category(uk.co.methodical.IntegrationTests.class)
+	public void methodsControllerCanReturnMethodListByTitle() {
+		MethodsController controller = new MethodsController();
+
+		String[] list = controller.getMethodByTitle("ambridge Surprise");
+/*
+		System.out.println("List of method names got from database:");
+		for (String method_name : list) {
+			System.out.println(method_name);
+		}*/
+
+		Arrays.sort(list);
+		
+		String[] correct_answer = { "Ambridge Surprise Major", "Cambridge Surprise Fourteen",
+				"Cambridge Surprise Major", "Cambridge Surprise Maximus", "Cambridge Surprise Minor",
+				"Cambridge Surprise Royal", "Cambridge Surprise Sixteen", "Hambridge Surprise Maximus",
+				"I Can't Believe It's Not Cambridge Surprise Major",
+				"I Can't Believe It's Not Cambridge Surprise Maximus",
+				"I Can't Believe It's Not New Cambridge Surprise Maximus", "New Cambridge Surprise Major",
+				"New Cambridge Surprise Maximus", "New Cambridge Surprise Royal" };
+
+		Arrays.sort(correct_answer);
+		
+		/*System.out.println("List of method names expected in test:");
+		for (String method_name : correct_answer) {
+			System.out.println(method_name);
+		}*/
+
+		
+		Assert.assertTrue("MethodsController can find a list of methods by title", Arrays.deepEquals(list,  correct_answer));
+	}
 
 	@Test
 	@Category(uk.co.methodical.IntegrationTests.class)
@@ -81,10 +112,8 @@ public class MethodsControllerTest extends BaseTest {
 		response = (TouchListItem) controller.parse(request);
 		Assert.assertEquals("MethodsController can create a touch that doesn't stop at rounds",
 				response.getTouch_length(), 96);
-		
-		Assert.assertTrue(
-				"MethodsController can sees repetition in a repetitious touch",
-				response.isRepetitious());
+
+		Assert.assertTrue("MethodsController can sees repetition in a repetitious touch", response.isRepetitious());
 
 		request.setStopAtRounds(true);
 		response = (TouchListItem) controller.parse(request);

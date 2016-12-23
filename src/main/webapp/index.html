@@ -41,6 +41,11 @@
 		console.log('Name: ' + profile.getName());
 		console.log('Image URL: ' + profile.getImageUrl());
 		console.log('Email: ' + profile.getEmail());
+		
+		var authResponse = googleUser.getAuthResponse();
+		
+		console.log('Access Token: ' + authResponse.access_token);
+		console.log('ID Token: ' + authResponse.id_token);
 	}
 
 	function signOut() {
