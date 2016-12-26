@@ -2,6 +2,7 @@ package uk.co.methodical;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class LeadEnd {
 	private Method method;
 	private int[] bell_order;
 	private ArrayList<int[]> rows;
+	private int[] coursing_order;
 
 	public LeadEnd(int[] bo, Method m, Call c) {
 		setBell_order(bo);
@@ -26,12 +28,16 @@ public class LeadEnd {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 		r.add(bo);
 		setRows(r);
+
+		coursing_order = null;
 	}
 
 	public LeadEnd(ArrayList<int[]> rows, Method m, Call c) {
 		setRows(rows);
 		setMethod(m);
 		setCall(c);
+
+		coursing_order = null;
 	}
 
 	public Method getMethod() {
@@ -183,18 +189,38 @@ public class LeadEnd {
 		return ret.toString();
 	}
 
-	public String getBellOrderString() {
-
+	private String arrayToString(int[] array) {
 		StringBuilder ret = new StringBuilder();
 
-		for (int i = 0; i < Array.getLength(getBell_order()); ++i) {
-			ret.append(bellNumberToChar(getBell_order()[i]));
+		for (int i = 0; i < array.length; ++i) {
+			ret.append(bellNumberToChar(array[i]));
 		}
 
 		return ret.toString();
 
 	}
-	
+
+	public String getCoursingOrderString() {
+		if (coursing_order != null) {
+			return arrayToString(coursing_order);
+		} else
+			return "";
+	}
+
+	public String getBellOrderString() {
+
+		return arrayToString(getBell_order());
+		/*
+		 * StringBuilder ret = new StringBuilder();
+		 * 
+		 * for (int i = 0; i < Array.getLength(getBell_order()); ++i) {
+		 * ret.append(bellNumberToChar(getBell_order()[i])); }
+		 * 
+		 * return ret.toString();
+		 */
+
+	}
+
 	private String bellNumberToChar(int bellNumber) {
 		switch (bellNumber) {
 		case 10:
@@ -249,6 +275,54 @@ public class LeadEnd {
 		}
 
 		return ret.toString();
+	}
+
+	private int indexOf(int[] array, int value) {
+		for (int i = 0; i < array.length; ++i) {
+			if (array[i] == value)
+				return i;
+		}
+
+		return -1;
+	}
+
+	public void stampCoursingOrder() {
+		int stage = this.method.getNumber_of_bells();
+		int start_position = indexOf(this.getBell_order(), stage);
+		System.out.print("Start Position = " + start_position + "; and stage is " + stage + "; and Bell Order is ");
+		for (int num : this.getBell_order()) {
+			System.out.print(num);
+		}
+		System.out.println();
+
+		int position = start_position;
+		int i = 0;
+
+		coursing_order = new int[stage - 1];
+
+		do {
+			if ((position & 1) == 0) {
+				if (position > 2) {
+					position = position - 2;
+				} else
+					--position;
+			} else {
+				if (position < stage - 1) {
+					position = position + 2;
+				} else
+					--position;
+				if (position > stage - 1) {
+					position = stage - 1;
+				}
+			}
+
+			coursing_order[i++] = getBell_order()[position];
+
+		} while (position != start_position);
+	}
+
+	public int[] getCoursingOrder() {
+		return coursing_order;
 	}
 
 }

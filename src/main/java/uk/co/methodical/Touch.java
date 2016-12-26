@@ -158,13 +158,17 @@ public class Touch {
 
 		try {
 			LeadEnd new_lead_end = LEFactory.createLE(previous, method, previous_call, call, false, stopAtRounds);
+			
+			if (call.getName() != "P") {
+				// If it's not a plain lead then work out the new coursing order
+				new_lead_end.stampCoursingOrder();
+			}
 			comesRound = new_lead_end.isRounds();
 
 			this.addLeadEnd(new_lead_end);
 
 		} catch (UnusedCall e) {
 			System.out.println("Caught UnusedCall" + e.getMessage());
-			;
 			e.printStackTrace();
 		}
 		

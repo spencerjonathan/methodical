@@ -316,13 +316,13 @@
 			var touchPanelClass = "danger";
 		}
 
-		innerHTML = '<table class="table-no-border" ><thead><tr><th>Method</th><th>Lead Head</th><th>Call</th></tr></thead><tbody>';
+		innerHTML = '<table class="table-no-border" ><thead><tr><th>Method</th><th>Lead Head</th><th>Call</th><th>Coursing Order</th></tr></thead><tbody>';
 
 		var leads = touch.leads;
 
 		touch.leads.forEach(function(lead) {
 			innerHTML += "<tr><td>" + lead.method + "</td><td>"
-					+ lead.bell_order + "</td><td>" + lead.call + "</td></tr>";
+					+ lead.bell_order + "</td><td>" + lead.call + "</td><td>" + lead.coursing_order + "</td></tr>";
 
 		});
 		innerHTML += "</table>";
