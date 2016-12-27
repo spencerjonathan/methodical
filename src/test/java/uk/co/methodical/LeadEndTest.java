@@ -24,12 +24,12 @@ public class LeadEndTest {
 
 	@Test
 	public void canConvertLeadEndToString() {
-		
+
 		ArrayList<int[]> al1 = new ArrayList<int[]>();
-		int[] al1_bell_order = {16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+		int[] al1_bell_order = { 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 		al1.add(al1_bell_order);
 		LeadEnd le1 = new LeadEnd(al1, null, null);
-		
+
 		Assert.assertTrue("Can convert LeadEnd to String", le1.getBellOrderString().equals("DCBATE0987654321"));
 	}
 
@@ -119,88 +119,130 @@ public class LeadEndTest {
 			Assert.assertTrue("LeadEnd correctly identifies 2 occurances of Queens", occurances == 2);
 		}
 	}
-	
+
 	private Method createPlainBobMajor() {
-	
+
 		try {
 			return MethodLibrary.instance().method("Plain Bob Major");
 		} catch (MethodNotFoundException e) {
 			e.printStackTrace();
 			Assert.assertTrue("MethodLibrary can find 'Plain Bob Major'", false);
 		}
-		
+
 		return null;
 	}
-	
+
 	private Method createPlainBobTriples() {
-		
+
 		try {
 			return MethodLibrary.instance().method("Plain Bob Triples");
 		} catch (MethodNotFoundException e) {
 			e.printStackTrace();
 			Assert.assertTrue("MethodLibrary can find 'Plain Bob Triples'", false);
 		}
-		
+
 		return null;
 	}
-	
+
+	private Method createGrandsireTriples() {
+
+		try {
+			return MethodLibrary.instance().method("Grandsire Triples");
+		} catch (MethodNotFoundException e) {
+			e.printStackTrace();
+			Assert.assertTrue("MethodLibrary can find 'Grandsire Triples'", false);
+		}
+
+		return null;
+	}
+
 	@Test
 	public void canStampCoursingOrderInPlainBobMajorHomePosition() {
 		int[] bell_order = { 1, 2, 3, 4, 5, 6, 7, 8 };
 		int[] expected_coursing_order = { 7, 5, 3, 2, 4, 6, 8 };
 		ArrayList<int[]> le_rows = new ArrayList<int[]>();
 		le_rows.add(bell_order);
-		
+
 		Method method = createPlainBobMajor();
-	
+
 		LeadEnd le = new LeadEnd(le_rows, method, null);
 		le.stampCoursingOrder();
-		
+
 		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
 	}
-	
+
 	@Test
 	public void canStampCoursingOrderInPlainBobMajorMiddlePosition() {
 		int[] bell_order = { 1, 4, 2, 6, 3, 8, 5, 7 };
 		int[] expected_coursing_order = { 7, 5, 3, 2, 4, 6, 8 };
 		ArrayList<int[]> le_rows = new ArrayList<int[]>();
 		le_rows.add(bell_order);
-		
+
 		Method method = createPlainBobMajor();
-	
+
 		LeadEnd le = new LeadEnd(le_rows, method, null);
 		le.stampCoursingOrder();
-		
+
 		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
 	}
-	
+
 	@Test
 	public void canStampCoursingOrderInPlainBobTriplesHomePosition() {
 		int[] bell_order = { 1, 2, 3, 4, 5, 6, 7 };
 		int[] expected_coursing_order = { 5, 3, 2, 4, 6, 7 };
 		ArrayList<int[]> le_rows = new ArrayList<int[]>();
 		le_rows.add(bell_order);
-		
+
 		Method method = createPlainBobTriples();
-	
+
 		LeadEnd le = new LeadEnd(le_rows, method, null);
 		le.stampCoursingOrder();
-		
+
 		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
 	}
-	
+
 	@Test
 	public void canStampCoursingOrderInPlainBobTriplesMiddlePosition() {
 		int[] bell_order = { 1, 3, 5, 2, 7, 4, 6 };
 		int[] expected_coursing_order = { 5, 3, 2, 4, 6, 7 };
 		ArrayList<int[]> le_rows = new ArrayList<int[]>();
 		le_rows.add(bell_order);
-		
+
 		Method method = createPlainBobTriples();
-	
+
 		LeadEnd le = new LeadEnd(le_rows, method, null);
 		le.stampCoursingOrder();
-		
+
+		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
+	}
+
+	@Test
+	public void canStampCoursingOrderInTwinHuntMethodHomePosition() {
+		int[] bell_order = { 1, 2, 3, 4, 5, 6, 7 };
+		int[] expected_coursing_order = { 5, 3, 4, 6, 7 };
+		ArrayList<int[]> le_rows = new ArrayList<int[]>();
+		le_rows.add(bell_order);
+
+		Method method = createGrandsireTriples();
+
+		LeadEnd le = new LeadEnd(le_rows, method, null);
+		le.stampCoursingOrder();
+
+		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
+	}
+
+	@Test
+	public void canStampCoursingOrderInTwinHuntMethodMiddlePosition() {
+		int[] bell_order = { 1, 2, 5, 3, 7, 4, 6 };
+		int[] expected_coursing_order = { 5, 3, 4, 6, 7 };
+		ArrayList<int[]> le_rows = new ArrayList<int[]>();
+		le_rows.add(bell_order);
+
+		Method method = createGrandsireTriples();
+
+		LeadEnd le = new LeadEnd(le_rows, method, null);
+		le.stampCoursingOrder();
+
 		Assert.assertArrayEquals(expected_coursing_order, le.getCoursingOrder());
 	}
 

@@ -18,7 +18,7 @@ public class BaseTest {
 		plain_bob_minor.setName("Plain Bob Minor");
 		plain_bob_minor.setNumber_of_bells(6);
 		plain_bob_minor.setNotation("X.16.X.16.X.16.X.16.X.16.X.12");
-		
+		plain_bob_minor.setNumber_of_hunts(1);
 		return plain_bob_minor;
 	}
 	
@@ -27,17 +27,18 @@ public class BaseTest {
 		grandsire_doubles.setName("Grandsire Doubles");
 		grandsire_doubles.setNumber_of_bells(5);
 		grandsire_doubles.setNotation("3.1.5.1.5.1.5.1.5.1");
+		grandsire_doubles.setNumber_of_hunts(2);
 		
 		return grandsire_doubles;
 	}
 	
 	protected Method createStSimonsDoublesMethod() {
-		Method grandsire_doubles = new Method();
-		grandsire_doubles.setName("Grandsire Doubles");
-		grandsire_doubles.setNumber_of_bells(5);
-		grandsire_doubles.setNotation("5.1.5.3.5.3.5.1.5.125");
-		
-		return grandsire_doubles;
+		Method method = new Method();
+		method.setName("Grandsire Doubles");
+		method.setNumber_of_bells(5);
+		method.setNotation("5.1.5.3.5.3.5.1.5.125");
+		method.setNumber_of_hunts(1);
+		return method;
 	}
 	
 	protected MethodListItem createMethodListItem() {

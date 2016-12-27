@@ -29,7 +29,7 @@ public class LeadEnd {
 		r.add(bo);
 		setRows(r);
 
-		coursing_order = null;
+		//stampCoursingOrder();
 	}
 
 	public LeadEnd(ArrayList<int[]> rows, Method m, Call c) {
@@ -289,7 +289,7 @@ public class LeadEnd {
 	public void stampCoursingOrder() {
 		int stage = this.method.getNumber_of_bells();
 		int start_position = indexOf(this.getBell_order(), stage);
-		System.out.print("Start Position = " + start_position + "; and stage is " + stage + "; and Bell Order is ");
+		System.out.print("Method = " + method.getName() + "; Number of Hunts = " + method.getNumber_of_hunts() + "; Start Position = " + start_position + "; and stage is " + stage + "; and Bell Order is ");
 		for (int num : this.getBell_order()) {
 			System.out.print(num);
 		}
@@ -298,14 +298,16 @@ public class LeadEnd {
 		int position = start_position;
 		int i = 0;
 
-		coursing_order = new int[stage - 1];
+		
+		coursing_order = new int[stage - method.getNumber_of_hunts()];
 
 		do {
 			if ((position & 1) == 0) {
-				if (position > 2) {
+				if (position > method.getNumber_of_hunts() + 1) {
 					position = position - 2;
 				} else
 					--position;
+				if (position < method.getNumber_of_hunts()) position = method.getNumber_of_hunts()+1;
 			} else {
 				if (position < stage - 1) {
 					position = position + 2;
@@ -316,6 +318,7 @@ public class LeadEnd {
 				}
 			}
 
+			System.out.println("i = " + i + "; position = " + position);
 			coursing_order[i++] = getBell_order()[position];
 
 		} while (position != start_position);
