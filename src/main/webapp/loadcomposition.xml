@@ -1,24 +1,70 @@
 
 <div>
-	<form class="form-inline">
-		<div class="col-md-10 input-group">
+	<form class="form">
+		<!-- <div class="col-md-12 input-group"> -->
 
-			<input id="findcompositionname" name="findcompositionname"
-				type="text" placeholder="Composition Name" class="form-control input-md"></input>
-			<!-- <span class="help-block">Enter the name of the composition here </span> -->
+		<div class="form-group">
+			<div class="col-md-4">
+				<label class="control-label">Composition Name</label>
+			</div>
+			<div class="col-md-8">
+				<input id="findcompositionname" name="findcompositionname"
+					type="text" placeholder="Composition Name" class="form-control input-md"></input>
+			</div>
 		</div>
-		<button type="button" class="btn btn-sm btn-primary" onclick="findCompositions()">
-			Find
-		</button>
+
+		<div class="form-group">
+			<div class="col-md-4">
+				<label class="control-label">Composition Author</label>
+			</div>
+			<div class="col-md-8">
+				<input id="findcompositionauthor" name="findcompositionauthor"
+					type="text" placeholder="Composition Author" class="form-control input-md col-md-10"></input>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-4">
+				<label class="control-label">Length</label>
+			</div>
+			<div class="col-md-4">
+				<input id="findcompositionlengthmin" name="findcompositionlengthmin"
+					type="text" placeholder="Min Length" class="form-control input-md col-md-4"></input>
+			</div>
+			<div class="col-md-4">
+				<input id="findcompositionlengthmax" name="findcompositionlengthmax"
+					type="text" placeholder="Max Length" class="form-control input-md col-md-4"></input>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-4">
+				<label class="control-label">Created Min/Max</label>
+			</div>
+			<div class="col-md-4">
+				<input id="findcompositioncreateddatemin" name="findcompositioncreateddatemin"
+					type="date" placeholder="Created Date Min" class="form-control input-md col-md-4"></input>
+			</div>
+			<div class="col-md-4">
+				<input id="findcompositioncreateddatemax" name="findcompositioncreateddatemax"
+					type="date" placeholder="Created Date Max" class="form-control input-md  col-md-4"></input>
+			</div>
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-sm btn-primary" onclick="findCompositions()">
+				Find
+			</button>
+		</div>
+
+		<div class="form-group">
+			<div id="compPanel" class="panel panel-primary ">
+				<div id="compHeading" class="panel-heading">
+					<h3 class="panel-title">Compositions Found</h3>
+				</div>
+				<div id="compBody" class="panel-body">
+					<div  style="height:200px;overflow:auto;"></div>
+				</div>
+			</div>
+		</div>
 	</form>
-	<br />
-	<div id="compPanel" class="panel panel-primary ">
-		<div id="compHeading" class="panel-heading">
-			<h3 class="panel-title">Compositions Found</h3>
-		</div>
-		<div id="compBody" class="panel-body">
-			<select style="height:100px; width:100%;" class="no-scroll"
-				multiple="true"></select>
-		</div>
-	</div>
 </div>

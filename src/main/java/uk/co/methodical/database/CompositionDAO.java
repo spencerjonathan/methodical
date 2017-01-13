@@ -41,6 +41,9 @@ public interface CompositionDAO {
 	 */
 
 	public Integer addComposition(Composition composition);
+	
+	public List<Composition> getCompositions(String title, String author, Integer lengthMin, Integer lengthMax,
+			String createdMin, String createdMax);
 
 
 }

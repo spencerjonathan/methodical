@@ -39,7 +39,7 @@ import uk.co.methodical.parser.Dictionary.DictionaryException;
 import uk.co.methodical.xml.CCFileImporter;
 
 @RestController
-/*@RequestMapping("/ws")*/
+/* @RequestMapping("/ws") */
 public class MethodsController {
 
 	private final AtomicLong counter = new AtomicLong();
@@ -160,31 +160,21 @@ public class MethodsController {
 
 	}
 
-	@RequestMapping(value = "/parse", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public ReturnItem parse(@RequestBody ParseRequest request) {
-
+	private Touch createTouch(String composition, boolean stopAtRounds) throws ExceptionItem {
 		Dictionary composition_dictionary;
 		try {
-			composition_dictionary = CompositionParser.parse(request.getComposition());
+			composition_dictionary = CompositionParser.parse(composition);
 		} catch (ParseException e) {
 
-			return new ExceptionItem("Could not parse the Touch definition.  " + e.getMessage());
+			throw new ExceptionItem("Could not parse the Touch definition.  " + e.getMessage());
 		} catch (DictionaryException e) {
 
-			return new ExceptionItem(e.getMessage());
+			throw new ExceptionItem(e.getMessage());
 		} catch (MethodNotFoundException e) {
 
-			return new ExceptionItem(e.getMessage());
+			throw new ExceptionItem(e.getMessage());
 		}
 		Item comp = composition_dictionary.get("COMPOSITION");
-
-		Map<String, String> music_definitions;
-		try {
-			music_definitions = MusicParser.parse(request.getMusic());
-		} catch (ParseException e) {
-
-			return new ExceptionItem("Could not parse the Music definition.  " + e.getMessage());
-		}
 
 		for (Iterator<Item> i = comp.iterator(); i.hasNext();) {
 			System.out.println(i.next().toString());
@@ -193,41 +183,87 @@ public class MethodsController {
 		TouchFactory touchFactory = new TouchFactory();
 		Touch touch;
 		try {
-			touch = touchFactory.createTouch(comp, composition_dictionary.getMax_stage(), request.isStopAtRounds()); 
+			touch = touchFactory.createTouch(comp, composition_dictionary.getMax_stage(), stopAtRounds);
 		} catch (TouchException e) {
 
 			e.printStackTrace();
-			return new ExceptionItem(e.getMessage());
+			throw new ExceptionItem(e.getMessage());
+		}
+		
+		return touch;
+	}
+	
+	@RequestMapping(value = "/parse", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public ReturnItem parse(@RequestBody ParseRequest request) {
+
+		Touch touch;
+		try {
+			touch = createTouch(request.getComposition(), request.isStopAtRounds());
+		} catch (ExceptionItem e1) {
+			return e1;
 		}
 
+		Map<String, String> music_definitions;
+		try {
+			music_definitions = MusicParser.parse(request.getMusic());
+		} catch (ParseException e) {
+
+			return new ExceptionItem("Could not parse the Music definition.  " + e.getMessage());
+		}
+		
 		Map<String, Integer> musical_qualities = touch.getMusicalQualities(music_definitions);
 
 		return new TouchListItem(touch, musical_qualities);
 	}
 
 	@RequestMapping(value = "/saveComposition", method = RequestMethod.POST, consumes = "text/html", produces = "application/json")
-	public int saveComposition(@RequestParam String title, @RequestBody String composition) {
+	public int saveComposition(@RequestParam String title, @RequestParam boolean stopAtRounds, @RequestBody String composition) {
 		Composition comp = new Composition();
-		comp.setAuthor("Jon");
+		comp.setAuthor(1);
 		comp.setComposition(composition);
 		comp.setTitle(title);
+		
+		Touch touch;
+		try {
+			touch = createTouch(composition, stopAtRounds);
+		} catch (ExceptionItem e1) {
+			return -1;
+		}
+
+		comp.setLength(touch.getLength());
+		comp.setTrue(touch.getRepetitiveChanges().length == 0);
+		comp.setCreated(new java.util.Date());
+		
 		return CompositionJDBCTemplate.instance().addComposition(comp);
 	}
-	
+
 	@RequestMapping(value = "/getComposition", method = RequestMethod.GET, produces = "application/json")
 	public Composition saveComposition(@RequestParam Integer id) throws CompositionNotFoundException {
 		return CompositionJDBCTemplate.instance().getComposition(id);
-		
+
 	}
 
 	@RequestMapping("/getCompositionByTitle")
-	public Composition[] getCompositionByTitle(@RequestParam(value = "searchString", required = true) String searchString) {
+	public Composition[] getCompositionByTitle(
+			@RequestParam(value = "searchString", required = true) String searchString) {
 
 		List<Composition> methods = CompositionJDBCTemplate.instance().getCompositionsByTitle("%" + searchString + "%");
 		return (Composition[]) methods.toArray(new Composition[methods.size()]);
 	}
 
-	
+	@RequestMapping("/getCompositions")
+		public Composition[] getCompositions(@RequestParam(value = "searchString", required = false) String searchString,
+				@RequestParam(value = "author", required = false) String author,
+				@RequestParam(value = "lengthMin", required = false) Integer lengthMin,
+				@RequestParam(value = "lengthMax", required = false) Integer lengthMax,
+				@RequestParam(value = "createdMin", required = false) String createdMin,
+				@RequestParam(value = "createdMax", required = false) String createdMax
+				) {
+
+			List<Composition> methods = CompositionJDBCTemplate.instance().getCompositions("%" + searchString + "%", "%" + author + "%", lengthMin, lengthMax, createdMin, createdMax);
+			return (Composition[]) methods.toArray(new Composition[methods.size()]);
+		}
+
 	@RequestMapping(value = "/importTowers")
 	public void importTowers(@RequestParam(value = "fileName") String fileName) throws IOException {
 

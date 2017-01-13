@@ -1,7 +1,11 @@
 package uk.co.methodical.ws;
 
-public class ReturnItem {
+public class ReturnItem extends Throwable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean exception;
 
 	public boolean isException() {

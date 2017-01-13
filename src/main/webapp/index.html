@@ -120,7 +120,7 @@
 		}, ws);
 	}
 
-	var g_composition_id = 0;
+	var g_composition_id = null;
 
 	function openComposition() {
 		loadComposition(g_composition_id)
@@ -134,7 +134,7 @@
 			}, "Open", function() {
 				var list = document
 						.getElementById('composition-select-list');
-				g_composition_id = list.options[list.selectedIndex].id;
+				//g_composition_id = list.options[list.selectedIndex].id;
 				openComposition();
 			});
 
@@ -147,10 +147,27 @@
 	}
 
 	function findCompositions() {
+		
+		g_composition_id = null;
+		
 		var title = document.getElementById('findcompositionname').value;
-		var ws = createWebServiceURI(urlPrefix + 'getCompositionByTitle', {
-			searchString : title
-		});
+		var author = document.getElementById('findcompositionauthor').value;
+		var lengthMin = document.getElementById('findcompositionlengthmin').value;
+		var lengthMax = document.getElementById('findcompositionlengthmax').value;
+		var createdMin = document.getElementById('findcompositioncreateddatemin').value;
+		var createdMax = document.getElementById('findcompositioncreateddatemax').value;
+		
+		var params = {
+				searchString : title,
+				"author" : author,
+				"lengthMin" : lengthMin,
+				"lengthMax" : lengthMax
+			};
+		
+		if (createdMin != "") { params.createdMin = createdMin; };
+		if (createdMax != "") { params.createdMax = createdMax; };
+		
+		var ws = createWebServiceURI(urlPrefix + 'getCompositions', params);
 
 		callWebService(function(result) {
 			var obj = JSON.parse(result);
@@ -391,22 +408,43 @@
 		this.setBody(innerHTML);
 	}
 
+	//var g_selected_composition = null;
+	
+	function setSelectedComposition(id) {
+		if (g_composition_id != null) {
+			var old_row = document.getElementById("composition-" + g_composition_id);
+			old_row.setAttribute("class", "");
+		}
+		g_composition_id = id;
+		var new_row = document.getElementById("composition-" + g_composition_id);
+		new_row.setAttribute("class", "bg-primary");
+	}
+	
 	function CompositionPanel(p_panel, p_heading, p_body) {
 		GenericPanel.call(this, p_panel, p_heading, p_body);
+		
+		this.compositions = null;
 	};
 
 	CompositionPanel.prototype = Object.create(GenericPanel.prototype);
 
 	CompositionPanel.prototype.draw = function(compositions) {
 
-		var innerHTML = '<select id="composition-select-list" style="height:100px; width:100%;" class="no-scroll" multiple="false">';
+		if (compositions != null) { this.compositions = compositions; };
+		
+		var innerHTML = "<div  style=\"height:200px;overflow:auto;\"><table class=\"table table-bordered\"><thead><tr><th>Title</th><th>Length</th><th>Created</th><th>Author</th><th>Is True</th></tr></thead><tbody>";
+		/* var innerHTML = '<select id="composition-select-list" style="height:100px; width:100%;" class="no-scroll" multiple="false">'; */
 
-		compositions.forEach(function(comp) {
+		this.compositions.forEach(function(comp) {
 
-			innerHTML += '<option id="' + comp.id + '">' + comp.title + '</option>';
+			innerHTML += "<tr id=\"composition-" + comp.id + "\"style=\"cursor:pointer\" onclick=\"setSelectedComposition(" + comp.id + ")\">";
+			innerHTML += "<td>" + comp.title + "</td><td> " + comp.length + "</td><td>" + comp.created + "</td><td>" + comp.author + "</td><td>" + comp.true + "</td></tr>";
+			
+			/* innerHTML += '<option id="' + comp.id + '">' + comp.title + '</option>'; */
 
 		});
 
+		innerHTML += "</tbody></table></div>";
 		console.log(innerHTML);
 		//htmlElement.innerHTML = innerHTML;
 

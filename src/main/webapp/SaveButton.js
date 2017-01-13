@@ -15,8 +15,10 @@ var SaveButton = function(p_saveButton, p_user_alert) {
 
 	function saveComposition() {
 		var title = document.getElementById('compositionname').value;
+		var stopatrounds = document.getElementById('stop-at-rounds').value;
 		var ws = createWebServiceURI(urlPrefix + 'saveComposition', {
-			title : title
+			title : title,
+			stopAtRounds : stopatrounds
 		});
 
 		var composition_string = document.getElementById("input").value;

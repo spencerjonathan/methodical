@@ -13,8 +13,10 @@ public class CompositionMapper implements RowMapper<Composition> {
 		Composition composition = new Composition();
 		composition.setId(rs.getInt("id"));
 		composition.setTitle(rs.getString("title"));
-		composition.setAuthor(rs.getString("author"));
-		//composition.setCreated(rs.getDate("created"));
+		composition.setAuthor(rs.getInt("author"));
+		composition.setCreated(new java.util.Date(rs.getTimestamp("created").getTime()));
+		composition.setLength(rs.getInt("length"));
+		composition.setTrue(rs.getBoolean("isTrue"));
 		composition.setComposition(rs.getString("composition"));
 
 		return composition;

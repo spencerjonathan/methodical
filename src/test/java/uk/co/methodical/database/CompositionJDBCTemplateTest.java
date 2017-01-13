@@ -12,9 +12,13 @@ public class CompositionJDBCTemplateTest {
 	@Test
 	public void canSaveAComposition() { 
 		Composition orig_comp = new Composition();
-		orig_comp.setAuthor("Jon");
+		orig_comp.setAuthor(1);
 		orig_comp.setTitle("Simple Composition");
-		orig_comp.setComposition("CALL B = 14\nCALL S = 1234\nMETHOD PBM = \"Plain Bob Minor\"\nCOMPOSITION = { PBM B P P P P P B B }");
+		orig_comp.setComposition("CALL B = 14\nCALL S = 1234\nMETHOD PBM = \"Plain Bob Minor\"\nCOMPOSITION = { PBM P P P P P }");
+		
+		orig_comp.setLength(60);
+		orig_comp.setTrue(true);
+		orig_comp.setCreated(new java.util.Date());
 		
 		CompositionJDBCTemplate jdbc = CompositionJDBCTemplate.instance();
 		Integer id = jdbc.addComposition(orig_comp);

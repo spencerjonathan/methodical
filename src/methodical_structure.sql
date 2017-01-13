@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `composition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
   `author` int(11) NOT NULL,
-  `created` datetime NOT NULL,
+  `created` timestamp NOT NULL,
   `composition` longtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
@@ -653,3 +653,15 @@ begin
             
 end$$
 
+CREATE PROCEDURE `GetCompositionByAttributes`(IN `p_title` VARCHAR(150), IN `p_author` VARCHAR(40), IN `p_length_min` INT(0), 
+	IN `p_length_max` INT, IN `p_created_min` DATE, IN `p_created_max` DATE) NOT DETERMINISTIC 
+	NO SQL SQL SECURITY DEFINER 
+begin	
+	SELECT id, title, author, created, length, isTrue, 20 as music, null as composition from composition 
+	where title like p_title 
+	and "Jon" like p_author 
+	and (p_length_min is null or length >= p_length_min)
+	and (p_length_max is null or length <= p_length_max)
+	and (p_created_min is null or created >= p_created_min)
+    	and (p_created_max is null or created <= p_created_max);
+end$$
