@@ -9,7 +9,7 @@ import uk.co.methodical.parser.Item;
 
 public class TouchFactory {
 
-	private static int max_depth = 5;
+	private static int max_depth = 100;
 	private int current_depth = 0;
 	private TouchLibrary touch_library = null;
 
@@ -61,7 +61,8 @@ public class TouchFactory {
 			Call previous_call) {
 
 		for (int m = 0; m < method_list.length; ++m) {
-			Call[] call_list = method_list[m].getCalls();
+			//Call[] call_list = method_list[m].getCalls();
+			Call[] call_list = new Call[0];
 			for (int c = -1; c < call_list.length; ++c) {
 
 				LeadEnd new_le;

@@ -101,12 +101,12 @@ public class MethodsController {
 	}
 
 	@RequestMapping(value = "/createImage", method = RequestMethod.GET, produces = "image/png")
-	public byte[] createImage(@RequestParam(value = "methodId") Integer methodId) {
+	public byte[] createImage(@RequestParam(value = "methodName") String methodName) throws MethodNotFoundException {
 
 		ByteArrayOutputStream outputstream = new ByteArrayOutputStream();
 
 		TouchFactory factory = new TouchFactory();
-		Touch plain_course = factory.createPlainCourse(methodId);
+		Touch plain_course = factory.createPlainCourse(methodName);
 
 		BufferedImage img = ImageCreator.CreateImage(plain_course);
 

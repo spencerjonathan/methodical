@@ -2,45 +2,22 @@
  * 
  */
 
+var g_selected_methods = [];
+
 var TouchWizard = function(p_button) {
 
 
 	var updateDropdown = function() {
 		console.log("In updateDropdown()")
 
-		var string_length = $('#method-name').val().length;
+		var string_length = $('#method-name-input').val().length;
 
 		if (string_length > 3) {
 			searchMethods({
-				searchString : $('#method-name').val()
+				searchString : $('#method-name-input').val()
 			});
 
 		}
-	};
-
-	var searchMethods = function(parameters) {
-		var ws = createWebServiceURI(urlPrefix + 'getMethodByTitle', parameters);
-
-		callWebService(
-				function(resultset) {
-					var obj = JSON.parse(resultset);
-
-					var innerHTML = "";
-					obj
-							.forEach(function(method) {
-
-								method = method.replace(/'/g, "\\'");
-								innerHTML += '<li style="cursor:pointer" onclick="setSearchText(\''
-										+ method + '\');">' + method + '</li>';
-
-							});
-
-					console.log(innerHTML);
-					document.getElementById("method-dropdown").innerHTML = innerHTML;
-
-				}, ws);
-
-		return g_method_list;
 	};
 
 	var drawList = function(list, htmlElement) {
@@ -57,7 +34,7 @@ var TouchWizard = function(p_button) {
 	};
 
 	var drawMethodList = function() {
-		drawList(g_method_list, document
+		drawList(g_selected_methods, document
 				.getElementById("selected-methods-list"));
 	};
 
@@ -65,7 +42,7 @@ var TouchWizard = function(p_button) {
 		var touch = "";
 
 		var method_number = 0;
-		g_method_list.forEach(function(method) {
+		g_selected_methods.forEach(function(method) {
 			touch += 'METHOD M' + ++method_number + ' = "' + method + '"\n'
 		});
 		touch += "\nCALL B = " + document.getElementById('bobnotation').value
@@ -78,18 +55,18 @@ var TouchWizard = function(p_button) {
 	};
 
 	var addMethodName = function() {
-		var name = document.getElementById('method-name').value;
+		var name = document.getElementById('method-name-input').value;
 
-		g_method_list.forEach(function(method) {
+		g_selected_methods.forEach(function(method) {
 			if (name == method)
 				return;
 		});
 
-		g_method_list.push(name);
+		g_selected_methods.push(name);
 
 		drawMethodList();
 
-		document.getElementById('method-name').value = "";
+		document.getElementById('method-name-input').value = "";
 	};
 
 	var removeMethodName = function() {
@@ -98,12 +75,12 @@ var TouchWizard = function(p_button) {
 
 		var new_list = [];
 
-		g_method_list.forEach(function(method) {
+		g_selected_methods.forEach(function(method) {
 			if (name != method)
 				new_list.push(method);
 		});
 
-		g_method_list = new_list;
+		g_selected_methods = new_list;
 
 		drawMethodList();
 	}
@@ -113,9 +90,22 @@ var TouchWizard = function(p_button) {
 			dialogWizard("Touch Wizard", result, drawMethodList,
 					"Generate", generateTouch);
 			
-			document.getElementById("method-name").oninput = updateDropdown;
+			//document.getElementById("method-name-input").oninput = updateDropdown;
 			document.getElementById("add-method-name").onclick = addMethodName;
 			document.getElementById("remove-method-name").onclick = removeMethodName;
+			
+			
+
+				$('#method-name-input').typeahead({
+					hint : true,
+					highlight : true,
+					minLength : 1
+				}, {
+					name : 'states',
+					source : substringMatcher()
+				});
+
+			
 			
 		}, "./touchwizard.xml");
 		
@@ -128,6 +118,6 @@ var TouchWizard = function(p_button) {
 };
 
 var setSearchText = function(text) {
-	document.getElementById("method-name").value = text;
+	document.getElementById("method-name-input").value = text;
 }
 

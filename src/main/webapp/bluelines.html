@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!-- Bootstrap core CSS -->
+<link href="./bootstrap-3.3.7-dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Bootstrap theme -->
+<link href="./bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"
+	rel="stylesheet">
+<link href="./bootstrap-select-1.12.1/dist/css/bootstrap-select.min.css"
+	rel="stylesheet">
+<link href="./typeahead.css" rel="stylesheet">
+
+
+<style>
+.table-no-border>thead>tr>th, .table-no-border>tbody>tr>th,
+	.table-no-border>tfoot>tr>th, .table-no-border>thead>tr>td,
+	.table-no-border>tbody>tr>td, .table-no-border>tfoot>tr>td {
+	border-top: none;
+	/* width: 100%; */
+	padding: 0px 3px;
+}
+</style>
+
+<meta name="google-signin-client_id"
+	content="924998448066-mb9d1qmrqpkfjf0jcv4c43aqn9i9qokv.apps.googleusercontent.com">
+</head>
+
+
+
+<script src="./jquery-1.11.1.min.js"></script>
+<script src="./bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="./bootstrap-select-1.12.1/dist/js/bootstrap-select.min.js"></script>
+
+<script src="typeahead.bundle.js"></script>
+<script src="common.js"></script>
+
+
+<script>
+	$(function() {
+		$("#header").load(
+				"header.html",
+				"",
+				function(response, status, xhr) {
+					if (status == "success") {
+						document.getElementById("bluelines-nav").setAttribute(
+								"class", "active");
+					}
+					;
+				});
+
+		$('#method-selector .typeahead').typeahead({
+			hint : true,
+			highlight : true,
+			minLength : 1
+		}, {
+			name : 'states',
+			source : substringMatcher()
+		});
+
+	});
+
+	var drawLine = function() {
+		var method_title = $('#method-name-input').val();
+
+		var parameters = {
+			methodName : method_title
+		};
+		var ws = createWebServiceURI(urlPrefix + 'createImage', parameters);
+
+		var image_html = '<img src="http://localhost:8081/' + ws + '">';
+		document.getElementById('blue_line_image').innerHTML = image_html;
+
+	};
+</script>
+
+<body role="document" onload="autoload()">
+
+	<div id="header"></div>
+
+	<form>
+		<div class="form-group" align="center">
+			<div id="method-selector">
+				<label class="control-label">Method Name</label> <input
+					id="method-name-input" class="typeahead form-control input-md"
+					type="text" placeholder="Enter Method Name">
+							<button id="generate_blueline_button" type="button"
+					onclick="drawLine()" class="btn btn-sm btn-primary">Draw
+					Line</button>
+			</div>
+		</div>
+	</form>
+	<br>
+	<div id="blue_line_image" align="center"></div>
+
+	<!-- 	<select id="method-selector" class="selectpicker"
+		data-live-search="true">
+		<option data-tokens="ketchup mustard">Hot Dog, Fries and a
+			Soda</option>
+		<option data-tokens="mustard">Burger, Shake and a Smile</option>
+		<option data-tokens="frosting">Sugar, Spice and all things
+			nice</option>
+	</select> -->
+
+</body>
+</html>
