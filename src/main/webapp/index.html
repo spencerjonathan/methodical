@@ -8,7 +8,7 @@
 <!-- Bootstrap theme -->
 <link href="./bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"
 	rel="stylesheet">
-	<link href="./typeahead.css" rel="stylesheet">
+<link href="./typeahead.css" rel="stylesheet">
 <style>
 .table-no-border>thead>tr>th, .table-no-border>tbody>tr>th,
 	.table-no-border>tfoot>tr>th, .table-no-border>thead>tr>td,
@@ -386,135 +386,30 @@
 		if (compositions != null) { this.compositions = compositions; };
 		
 		var innerHTML = "<div  style=\"height:200px;overflow:auto;\"><table class=\"table table-bordered\"><thead><tr><th>Title</th><th>Length</th><th>Created</th><th>Author</th><th>Is True</th></tr></thead><tbody>";
-		/* var innerHTML = '<select id="composition-select-list" style="height:100px; width:100%;" class="no-scroll" multiple="false">'; */
 
 		this.compositions.forEach(function(comp) {
 
 			innerHTML += "<tr id=\"composition-" + comp.id + "\"style=\"cursor:pointer\" onclick=\"setSelectedComposition(" + comp.id + ")\">";
 			innerHTML += "<td>" + comp.title + "</td><td> " + comp.length + "</td><td>" + comp.created + "</td><td>" + comp.author + "</td><td>" + comp.true + "</td></tr>";
-			
-			/* innerHTML += '<option id="' + comp.id + '">' + comp.title + '</option>'; */
 
 		});
 
 		innerHTML += "</tbody></table></div>";
 		console.log(innerHTML);
-		//htmlElement.innerHTML = innerHTML;
-
-		/* 		var innerHTML = '<table class="table"><tbody>';
-
-		 compositions.forEach(function(comp) {
-		 //innerHTML += 'Test';
-		 innerHTML += '<tr><td style="cursor:pointer" onclick="setSelect(';
-		 innerHTML += comp.id + ')\">';
-		 innerHTML += comp.title + '</td></tr>';
-
-		 });
-		 innerHTML += "</table>";
-		 */
 		this.setBody(innerHTML);
 	}
 	
 	$(function(){
 		$("#header").load("header.html", "", function(response,status,xhr) {
+			//if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
+		});
+		
+		$("#body").load("compose.html", "", function(response,status,xhr) {
 			if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
 		});
-		//document.getElementById("compositions-nav").setAttribute("class", "active");
-		/* $("#compositions-nav").setAttribute("class", "active"); */
 	});
-</script>
-
-<body role="document" onload="autoload()">
-	<div id="header"></div>
-
-	<div class="col-sm-12">
-
-		<div id="alert" style="display: none"
-			class="col-sm-12 alert alert-warning" role="alert">
-			<strong>Warning!</strong> Best check yo self, you're not looking too
-			good.
-		</div>
-
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h3 class="panel-title">Enter Composition</h3>
-
-				</div>
-				<div class="panel-body">
-					<button id="touch_wizard_button" type="button"
-						class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
-					<button id="save_button" type="button"
-						class="btn btn-sm btn-primary" title="Save Composition">
-						<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
-						Save
-					</button>
-					<button type="button" class="btn btn-sm btn-primary"
-						title="Open Composition" onClick="openCompositionDialog()">
-						<span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
-						Open
-					</button>
-					<button type="button" class="btn btn-sm btn-primary" id="submit"
-						title="Submit Composition">
-						<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-						Submit
-					</button>
-					<label> <input id="stop-at-rounds" type="checkbox"
-						checked="true"> Stop at Rounds?
-					</label>
-
-					<textarea id="input" style="width: 100%; height: 300px"></textarea>
-					<br>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Music Definition</h3>
-				</div>
-				<div class="panel-body">
-					<textarea id="music-input" style="width: 100%; height: 330px">"Queens" = 135246
-"Titums" = 142536
-"Rollup" = 456$
-"546" = 546$</textarea>
-
-				</div>
-			</div>
-		</div>
-
-		<br>
-		<hr>
-		<div class="col-md-6">
-			<div id="touchPanel" class="panel panel-success">
-				<div class="panel-heading">
-					<h3 id="touchHeading" class="panel-title">Touch Result</h3>
-				</div>
-				<div id="touchPanelBody" class="panel-body"></div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div id="musicPanel" class="panel panel-success ">
-				<div class="panel-heading">
-					<h3 id="musicHeading" class="panel-title">Music Found</h3>
-				</div>
-				<div id="musicPanelBody" class="panel-body"></div>
-			</div>
-		</div>
-		<div class="col-md-12">
-			<div id="repetitionPanel" class="panel panel-warning">
-				<div class="panel-heading">
-					<h3 id="repetitionHeading" class="panel-title">Repetition</h3>
-				</div>
-				<div id="repetitionPanelBody" class="panel-body"></div>
-			</div>
-		</div>
-	</div>
-
-</body>
-
-<script>
-	var init = function() {
+	
+	var init_compose = function() {
 		var g_touchPanel = new TouchPanel(
 				document.getElementById("touchPanel"), document
 						.getElementById("touchHeading"), document
@@ -546,7 +441,41 @@
 				.getElementById("save_button"), g_userAlert);
 
 	};
+	
+	var loadCompose = function() {
+		$("#body").load("compose.html", "", function(response,status,xhr) {
+			if (status == "success") { 
+				document.getElementById("compositions-nav").setAttribute("class", "active"); 
+				document.getElementById("bluelines-nav").setAttribute("class", "");
+			};
+			init_compose();
+		});
+	};
+	
+	var loadBluelines = function() {
+		$("#body").load("bluelines.html", "", function(response,status,xhr) {
+			if (status == "success") { 
+				document.getElementById("compositions-nav").setAttribute("class", ""); 
+				document.getElementById("bluelines-nav").setAttribute("class", "active");
 
-	init();
+				$('#method-name-input').typeahead({
+					hint : true,
+					highlight : true,
+					minLength : 1
+				}, {
+					name : 'states',
+					source : substringMatcher()
+				});
+				
+			};
+		});
+	};
+	
 </script>
+
+<body role="document" onload="autoload()">
+	<div id="header"></div>
+	<div id="body"></div>
+</body>
+
 </html>

@@ -169,9 +169,16 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
-				<configuration> <executable>true</executable> <jvmArguments> -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 
-				</jvmArguments> </configuration> </plugin>
+			<!-- <plugin>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-maven-plugin</artifactId>
+	<configuration>
+		<executable>true</executable>
+		<jvmArguments> -Xdebug
+			-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+		</jvmArguments>
+	</configuration>
+</plugin> -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.11</version>

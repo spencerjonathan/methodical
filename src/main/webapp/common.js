@@ -31,28 +31,28 @@ var searchMethods = function(parameters, cb) {
 	var ws = createWebServiceURI(urlPrefix + 'getMethodByTitle', parameters);
 
 	var ret = [];
-	
-	callWebService(
-			function(resultset) {
-				ret = JSON.parse(resultset);
-				
-				g_method_list = ret;
 
-				/*var innerHTML = '<select id="method-selector" class="selectpicker" data-live-search="true">';
-				obj.forEach(function(method) {
+	callWebService(function(resultset) {
+		ret = JSON.parse(resultset);
 
-					method = method.replace(/'/g, "\\'");
-					innerHTML += '<option>' + method + '</option>';
+		g_method_list = ret;
 
-				});
-				innerHTML += '</select>';
+		/*
+		 * var innerHTML = '<select id="method-selector" class="selectpicker"
+		 * data-live-search="true">'; obj.forEach(function(method) {
+		 * 
+		 * method = method.replace(/'/g, "\\'"); innerHTML += '<option>' +
+		 * method + '</option>';
+		 * 
+		 * }); innerHTML += '</select>';
+		 * 
+		 * console.log(innerHTML);
+		 * document.getElementById("method-selector-div").innerHTML = innerHTML;
+		 * 
+		 * $('.selectpicker').selectpicker('refresh');
+		 */
 
-				console.log(innerHTML);
-				document.getElementById("method-selector-div").innerHTML = innerHTML;
-
-				$('.selectpicker').selectpicker('refresh');*/
-
-			}, ws);
+	}, ws);
 
 };
 
@@ -74,7 +74,7 @@ function autoload() {
 	if (objURL["composition"] != null) {
 		loadComposition(objURL["composition"]);
 	}
-	
+
 	searchMethods({
 		searchString : ""
 	});
@@ -82,6 +82,19 @@ function autoload() {
 }
 
 var g_method_list;
+
+var drawLine = function() {
+	var method_title = $('#method-name-input').val();
+
+	var parameters = {
+		methodName : method_title
+	};
+	var ws = createWebServiceURI(urlPrefix + 'createImage', parameters);
+
+	var image_html = '<img src="http://localhost:8081/' + ws + '">';
+	document.getElementById('blue_line_image').innerHTML = image_html;
+
+};
 
 var substringMatcher = function() {
 	return function findMatches(q, cb) {
@@ -93,15 +106,13 @@ var substringMatcher = function() {
 		// regex used to determine if a string contains the substring `q`
 		substrRegex = new RegExp(q, 'i');
 
-		/*if (q.length > 3) {
-			searchMethods({
-				searchString : q
-			}, cb);
-		}*/
+		/*
+		 * if (q.length > 3) { searchMethods({ searchString : q }, cb); }
+		 */
 		// iterate through the pool of strings and for any string that
 		// contains the substring `q`, add it to the `matches` array
 		$.each(g_method_list, function(i, str) {
-		//$.each(strs, function(i, str) {
+			// $.each(strs, function(i, str) {
 			if (substrRegex.test(str)) {
 				matches.push(str);
 			}
@@ -110,8 +121,3 @@ var substringMatcher = function() {
 		cb(matches);
 	};
 };
-
-
-
-
-
