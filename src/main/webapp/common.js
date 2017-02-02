@@ -30,28 +30,8 @@ var callWebService = function(responseHandler, url) {
 var searchMethods = function(parameters, cb) {
 	var ws = createWebServiceURI(urlPrefix + 'getMethodByTitle', parameters);
 
-	var ret = [];
-
 	callWebService(function(resultset) {
-		ret = JSON.parse(resultset);
-
-		g_method_list = ret;
-
-		/*
-		 * var innerHTML = '<select id="method-selector" class="selectpicker"
-		 * data-live-search="true">'; obj.forEach(function(method) {
-		 * 
-		 * method = method.replace(/'/g, "\\'"); innerHTML += '<option>' +
-		 * method + '</option>';
-		 * 
-		 * }); innerHTML += '</select>';
-		 * 
-		 * console.log(innerHTML);
-		 * document.getElementById("method-selector-div").innerHTML = innerHTML;
-		 * 
-		 * $('.selectpicker').selectpicker('refresh');
-		 */
-
+		g_method_list = JSON.parse(resultset);
 	}, ws);
 
 };
@@ -91,7 +71,7 @@ var drawLine = function() {
 	};
 	var ws = createWebServiceURI(urlPrefix + 'createImage', parameters);
 
-	var image_html = '<img src="http://localhost:8081/' + ws + '">';
+	var image_html = '<img src="./' + ws + '">';
 	document.getElementById('blue_line_image').innerHTML = image_html;
 
 };
@@ -106,13 +86,9 @@ var substringMatcher = function() {
 		// regex used to determine if a string contains the substring `q`
 		substrRegex = new RegExp(q, 'i');
 
-		/*
-		 * if (q.length > 3) { searchMethods({ searchString : q }, cb); }
-		 */
 		// iterate through the pool of strings and for any string that
 		// contains the substring `q`, add it to the `matches` array
 		$.each(g_method_list, function(i, str) {
-			// $.each(strs, function(i, str) {
 			if (substrRegex.test(str)) {
 				matches.push(str);
 			}
