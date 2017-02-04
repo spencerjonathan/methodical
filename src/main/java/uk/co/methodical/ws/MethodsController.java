@@ -189,10 +189,10 @@ public class MethodsController {
 			e.printStackTrace();
 			throw new ExceptionItem(e.getMessage());
 		}
-		
+
 		return touch;
 	}
-	
+
 	@RequestMapping(value = "/parse", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public ReturnItem parse(@RequestBody ParseRequest request) {
 
@@ -210,19 +210,25 @@ public class MethodsController {
 
 			return new ExceptionItem("Could not parse the Music definition.  " + e.getMessage());
 		}
-		
-		List<Music> musical_qualities = touch.getMusicalQualities(music_definitions);
 
-		return new TouchListItem(touch, musical_qualities.toArray(new Music[musical_qualities.size()]));
+		List<Music> musical_qualities = touch.getMusicalQualities(music_definitions);
+		Music[] music_array = null;
+
+		if (musical_qualities.size() > 0) {
+			music_array = musical_qualities.toArray(new Music[musical_qualities.size()]);
+		}
+
+		return new TouchListItem(touch, music_array);
 	}
 
 	@RequestMapping(value = "/saveComposition", method = RequestMethod.POST, consumes = "text/html", produces = "application/json")
-	public int saveComposition(@RequestParam String title, @RequestParam boolean stopAtRounds, @RequestBody String composition) {
+	public int saveComposition(@RequestParam String title, @RequestParam boolean stopAtRounds,
+			@RequestBody String composition) {
 		Composition comp = new Composition();
 		comp.setAuthor(1);
 		comp.setComposition(composition);
 		comp.setTitle(title);
-		
+
 		Touch touch;
 		try {
 			touch = createTouch(composition, stopAtRounds);
@@ -233,7 +239,7 @@ public class MethodsController {
 		comp.setLength(touch.getLength());
 		comp.setTrue(touch.getRepetitiveChanges().length == 0);
 		comp.setCreated(new java.util.Date());
-		
+
 		return CompositionJDBCTemplate.instance().addComposition(comp);
 	}
 
@@ -252,17 +258,17 @@ public class MethodsController {
 	}
 
 	@RequestMapping("/getCompositions")
-		public Composition[] getCompositions(@RequestParam(value = "searchString", required = false) String searchString,
-				@RequestParam(value = "author", required = false) String author,
-				@RequestParam(value = "lengthMin", required = false) Integer lengthMin,
-				@RequestParam(value = "lengthMax", required = false) Integer lengthMax,
-				@RequestParam(value = "createdMin", required = false) String createdMin,
-				@RequestParam(value = "createdMax", required = false) String createdMax
-				) {
+	public Composition[] getCompositions(@RequestParam(value = "searchString", required = false) String searchString,
+			@RequestParam(value = "author", required = false) String author,
+			@RequestParam(value = "lengthMin", required = false) Integer lengthMin,
+			@RequestParam(value = "lengthMax", required = false) Integer lengthMax,
+			@RequestParam(value = "createdMin", required = false) String createdMin,
+			@RequestParam(value = "createdMax", required = false) String createdMax) {
 
-			List<Composition> methods = CompositionJDBCTemplate.instance().getCompositions("%" + searchString + "%", "%" + author + "%", lengthMin, lengthMax, createdMin, createdMax);
-			return (Composition[]) methods.toArray(new Composition[methods.size()]);
-		}
+		List<Composition> methods = CompositionJDBCTemplate.instance().getCompositions("%" + searchString + "%",
+				"%" + author + "%", lengthMin, lengthMax, createdMin, createdMax);
+		return (Composition[]) methods.toArray(new Composition[methods.size()]);
+	}
 
 	@RequestMapping(value = "/importTowers")
 	public void importTowers(@RequestParam(value = "fileName") String fileName) throws IOException {

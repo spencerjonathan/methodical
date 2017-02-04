@@ -321,10 +321,15 @@
 
 		var music = touch.music;
 
+		if (music == null) {
+			this.setBody("No music found");
+			return;
+		}
+		
 		if (document.getElementById("music-display").checked) {
 			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row</th></tr></thead><tbody>';
 		
-			touch.music.forEach(function(m) {
+			music.forEach(function(m) {
 				innerHTML += "<tr><td>" + m.music_name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number
 						+ "</td></tr>";
 
@@ -335,7 +340,7 @@
 			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Count</th></tr></thead><tbody>';
 			
 			// Work out how many occurances of each music has been found
-			touch.music.forEach(function(m) {
+			music.forEach(function(m) {
 				var count = music_count.get(m.music_name);
 			
 				if (music_count.has(m.music_name)) {
