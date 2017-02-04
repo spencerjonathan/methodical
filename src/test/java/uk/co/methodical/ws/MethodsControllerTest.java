@@ -1,7 +1,9 @@
 package uk.co.methodical.ws;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -16,22 +18,19 @@ import uk.co.methodical.ws.TouchListItem;
 
 public class MethodsControllerTest extends BaseTest {
 
-	
-	
 	@Test
 	@Category(uk.co.methodical.IntegrationTests.class)
 	public void methodsControllerCanReturnMethodListByTitle() {
 		MethodsController controller = new MethodsController();
 
 		String[] list = controller.getMethodByTitle("ambridge Surprise");
-/*
-		System.out.println("List of method names got from database:");
-		for (String method_name : list) {
-			System.out.println(method_name);
-		}*/
+		/*
+		 * System.out.println("List of method names got from database:"); for
+		 * (String method_name : list) { System.out.println(method_name); }
+		 */
 
 		Arrays.sort(list);
-		
+
 		String[] correct_answer = { "Ambridge Surprise Major", "Cambridge Surprise Fourteen",
 				"Cambridge Surprise Major", "Cambridge Surprise Maximus", "Cambridge Surprise Minor",
 				"Cambridge Surprise Royal", "Cambridge Surprise Sixteen", "Hambridge Surprise Maximus",
@@ -41,14 +40,15 @@ public class MethodsControllerTest extends BaseTest {
 				"New Cambridge Surprise Maximus", "New Cambridge Surprise Royal" };
 
 		Arrays.sort(correct_answer);
-		
-		/*System.out.println("List of method names expected in test:");
-		for (String method_name : correct_answer) {
-			System.out.println(method_name);
-		}*/
 
-		
-		Assert.assertTrue("MethodsController can find a list of methods by title", Arrays.deepEquals(list,  correct_answer));
+		/*
+		 * System.out.println("List of method names expected in test:"); for
+		 * (String method_name : correct_answer) {
+		 * System.out.println(method_name); }
+		 */
+
+		Assert.assertTrue("MethodsController can find a list of methods by title",
+				Arrays.deepEquals(list, correct_answer));
 	}
 
 	@Test
@@ -80,17 +80,24 @@ public class MethodsControllerTest extends BaseTest {
 				"MethodsController can create 9 bob touch of St Simon's Bob Doubles and it reports the correct length",
 				response.getTouch_length() == 120);
 
-		Map<String, Integer> correct_music = new HashMap<String, Integer>();
-		correct_music.put("\"Queens\"", 1);
-		correct_music.put("\"Titums\"", 1);
-		correct_music.put("\"Rollup\"", 6);
+		List<Music> correct_music = new ArrayList<Music>();
 
+		correct_music.add(new Music("\"Rollup\"", 9, 4));
+		correct_music.add(new Music("\"Rollup\"", 1, 5));
+		correct_music.add(new Music("\"Rollup\"", 7, 5));
+		correct_music.add(new Music("\"Titums\"", 9, 10));
+		correct_music.add(new Music("\"Queens\"", 10, 11));
+		correct_music.add(new Music("\"Rollup\"", 2, 12));
+		correct_music.add(new Music("\"Rollup\"", 8, 12));
+		correct_music.add(new Music("\"Rollup\"", 10, 12));
+
+		Music[] correct_music_array = correct_music.toArray(new Music[correct_music.size()]);
+		
 		Music[] response_music = response.getMusic();
-		for (Music m : response_music) {
-			Assert.assertTrue(
-					"MethodsController can identify " + m.getName() + " in 9 bob touch of St Simon's Bob Doubles",
-					m.getOccurances() == correct_music.get(m.getName()));
-		}
+
+		Assert.assertTrue("MethodsController can identify music in 9 bob touch of St Simon's Bob Doubles",
+				Arrays.deepEquals(correct_music_array, response_music));
+
 	}
 
 	@Test

@@ -211,9 +211,9 @@ public class MethodsController {
 			return new ExceptionItem("Could not parse the Music definition.  " + e.getMessage());
 		}
 		
-		Map<String, Integer> musical_qualities = touch.getMusicalQualities(music_definitions);
+		List<Music> musical_qualities = touch.getMusicalQualities(music_definitions);
 
-		return new TouchListItem(touch, musical_qualities);
+		return new TouchListItem(touch, musical_qualities.toArray(new Music[musical_qualities.size()]));
 	}
 
 	@RequestMapping(value = "/saveComposition", method = RequestMethod.POST, consumes = "text/html", produces = "application/json")

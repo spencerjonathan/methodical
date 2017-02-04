@@ -1,11 +1,11 @@
 package uk.co.methodical;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import uk.co.methodical.parser.Dictionary;
+import uk.co.methodical.ws.Music;
 
 public class Touch {
 
@@ -191,15 +191,17 @@ public class Touch {
 		return comesRound;
 	}
 
-	public Map<String, Integer> getMusicalQualities(Map<String, String> music_definitions) {
-		Map<String, Integer> musical_qualities = new HashMap<String, Integer>();
+	public List<Music> getMusicalQualities(Map<String, String> music_definitions) {
+		List<Music> musical_qualities = new ArrayList<Music>();
+		
+		int lead_number = 0;
 		
 		// Discard the first LeadEnd
 		Iterator<LeadEnd> i = lead_ends.iterator(); 
 		if (i.hasNext()) i.next();
 		
 		for (; i.hasNext();) {
-			i.next().addMusicalQualities(musical_qualities, music_definitions);
+			i.next().addMusicalQualities(musical_qualities, music_definitions, ++lead_number);
 		}
 		
 		return musical_qualities;

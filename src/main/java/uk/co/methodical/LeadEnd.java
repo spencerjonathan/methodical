@@ -2,14 +2,14 @@ package uk.co.methodical;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import uk.co.methodical.parser.Dictionary;
+import uk.co.methodical.ws.Music;
 
 public class LeadEnd {
 
@@ -243,9 +243,11 @@ public class LeadEnd {
 		}
 	}
 
-	public void addMusicalQualities(Map<String, Integer> musical_qualities, Map<String, String> music_definitions) {
+	public void addMusicalQualities(List<Music> musical_qualities, Map<String, String> music_definitions, int lead_number) {
 
+		int row_number = 0;
 		for (Iterator<int[]> row_iterator = rows.iterator(); row_iterator.hasNext();) {
+			++row_number;
 			int[] row = row_iterator.next();
 			Set<String> keys = music_definitions.keySet();
 
@@ -256,14 +258,16 @@ public class LeadEnd {
 
 				if (m.find()) {
 					String music_name = music_definitions.get(music);
-					Integer occurances = 1;
+					/*Integer occurances = 1;
 					if (musical_qualities.containsKey(music_name)) {
 						occurances += musical_qualities.get(music_name);
-					}
-					musical_qualities.put(music_name, occurances);
+					}*/
+					musical_qualities.add(new Music(music_name, row_number, lead_number));
 				}
 
 			}
+			
+			
 		}
 	}
 

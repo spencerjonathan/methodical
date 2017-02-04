@@ -29,7 +29,7 @@
 <script src="bootbox.js"></script>
 <script src="typeahead.bundle.js"></script>
 <script src="common.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+<!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
 <script src="common.js"></script>
 <script src="SubmitButton.js"></script>
@@ -311,12 +311,12 @@
 		var musicPanelClass = "panel panel-success";
 		var innerHTML = "";
 
-		innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Occurances</th></tr></thead><tbody>';
+		innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row</th></tr></thead><tbody>';
 
 		var music = touch.music;
 
 		touch.music.forEach(function(m) {
-			innerHTML += "<tr><td>" + m.name + "</td><td>" + m.occurances
+			innerHTML += "<tr><td>" + m.name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number
 					+ "</td></tr>";
 
 		});
@@ -402,9 +402,11 @@
 			//if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
 		});
 		
-		$("#body").load("compose.html", "", function(response,status,xhr) {
+		loadCompose();
+		
+		/* $("#body").load("compose.html", "", function(response,status,xhr) {
 			if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
-		});
+		}); */
 	});
 	
 	var init_compose = function() {

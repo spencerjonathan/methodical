@@ -2,6 +2,7 @@ package uk.co.methodical;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import uk.co.methodical.LeadEnd;
 import uk.co.methodical.RepetitiveChange;
 import uk.co.methodical.database.MethodNotFoundException;
+import uk.co.methodical.ws.Music;
 
 public class LeadEndTest {
 
@@ -105,19 +107,25 @@ public class LeadEndTest {
 
 		LeadEnd le = new LeadEnd(le_rows, null, null);
 
-		Map<String, Integer> musical_qualities = new HashMap<String, Integer>();
+		List<Music> musical_qualities = new ArrayList<Music>();
 		Map<String, String> music_definitions = new HashMap<String, String>();
 		music_definitions.put("135246", "Queens");
 		music_definitions.put("142536", "Titums");
 
-		le.addMusicalQualities(musical_qualities, music_definitions);
+		le.addMusicalQualities(musical_qualities, music_definitions, 1);
 
-		Assert.assertFalse("LeadEnd doesn't incorrectly claim to find Titums", musical_qualities.containsKey("Titums"));
-		Integer occurances = musical_qualities.get("Queens");
-		Assert.assertTrue("LeadEnd does correctly identify that it contains Queens", occurances != null);
-		if (occurances != null) {
-			Assert.assertTrue("LeadEnd correctly identifies 2 occurances of Queens", occurances == 2);
+		int queens_found_count = 0;
+		for (Music m : musical_qualities) {
+			if (m.getMusic_name().equals("Titums")) {
+				Assert.assertFalse("LeadEnd doesn't incorrectly claim to find Titums", true);
+			}
+			if (m.getMusic_name().equals("Queens")) {
+				++queens_found_count;
+			}
 		}
+
+		Assert.assertTrue("LeadEnd correctly identifies 2 occurances of Queens", queens_found_count == 2);
+
 	}
 
 	private Method createPlainBobMajor() {

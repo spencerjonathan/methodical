@@ -2,14 +2,16 @@ package uk.co.methodical.ws;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
-
 import uk.co.methodical.LeadEnd;
 import uk.co.methodical.RepetitiveChange;
 import uk.co.methodical.Touch;
 
 public class TouchListItem extends ReturnItem {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int touch_length;
 	private Lead[] leads;
 	private boolean is_repetitious;
@@ -18,23 +20,17 @@ public class TouchListItem extends ReturnItem {
 	private RepetitiveChange[] repetitive_changes;
 	private Music[] music;
 
-	public TouchListItem(Touch touch, Map<String, Integer> musical_qualities) {
+	public TouchListItem(Touch touch, Music[] music) {
 		
 		this.touch_length = touch.getLength();
 		this.setUid(touch.getUid());
+		this.music = music;
 		
 		ArrayList<LeadEnd> lead_ends = touch.getLead_ends();
 		this.leads = new Lead[lead_ends.size()];
 		int lead_no = 0;
 		for (Iterator<LeadEnd> i = lead_ends.iterator(); i.hasNext();) {
 			this.leads[lead_no++] = new Lead(i.next()); 
-		}
-		
-		this.music = new Music[musical_qualities.size()];
-		int music_no = 0;
-		for (Iterator<String> i = musical_qualities.keySet().iterator(); i.hasNext();) {
-			String key = i.next();
-			this.music[music_no++] = new Music(key, musical_qualities.get(key)); 
 		}
 		
 		setComes_round(touch.comesRound());
