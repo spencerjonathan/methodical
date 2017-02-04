@@ -307,22 +307,57 @@
 	MusicPanel.prototype = Object.create(GenericPanel.prototype);
 
 	MusicPanel.prototype.draw = function(touch) {
+		if (touch != null) {
+			this.touch = touch;
+		} else {
+			touch = this.touch;
+		}
+		
+		if (touch == null) return;
+		
 		var musicTitle = "";
 		var musicPanelClass = "panel panel-success";
 		var innerHTML = "";
 
-		innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row</th></tr></thead><tbody>';
-
 		var music = touch.music;
 
-		touch.music.forEach(function(m) {
-			innerHTML += "<tr><td>" + m.name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number
-					+ "</td></tr>";
+		if (document.getElementById("music-display").checked) {
+			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row</th></tr></thead><tbody>';
+		
+			touch.music.forEach(function(m) {
+				innerHTML += "<tr><td>" + m.music_name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number
+						+ "</td></tr>";
 
-		});
-		innerHTML += "</table>";
+			});
+			innerHTML += "</table>";
+		} else {
+			var music_count = new Map;
+			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Count</th></tr></thead><tbody>';
+			
+			// Work out how many occurances of each music has been found
+			touch.music.forEach(function(m) {
+				var count = music_count.get(m.music_name);
+			
+				if (music_count.has(m.music_name)) {
+					music_count.set(m.music_name, music_count.get(m.music_name)+1)
+				} else {
+					music_count.set(m.music_name, 1);
+				}
+			});
+			
+			music_count.forEach(function(count, name, map) {
+				innerHTML += "<tr><td>" + name + "</td><td>" + count + "</td></tr>";
+			});
+			
+			innerHTML += "</table>";
+		}
+		
 
 		this.setBody(innerHTML);
+	};
+	
+	function musicDisplayChange() {
+		g_musicPanel.draw(null);
 	}
 
 	function RepetitionPanel(p_panel, p_heading, p_body) {
@@ -404,10 +439,9 @@
 		
 		loadCompose();
 		
-		/* $("#body").load("compose.html", "", function(response,status,xhr) {
-			if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
-		}); */
 	});
+	
+	var g_musicPanel = null;
 	
 	var init_compose = function() {
 		var g_touchPanel = new TouchPanel(
@@ -415,7 +449,7 @@
 						.getElementById("touchHeading"), document
 						.getElementById("touchPanelBody"));
 
-		var g_musicPanel = new MusicPanel(
+		g_musicPanel = new MusicPanel(
 				document.getElementById("musicPanel"), document
 						.getElementById("musicHeading"), document
 						.getElementById("musicPanelBody"));

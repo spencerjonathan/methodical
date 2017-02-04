@@ -70,7 +70,14 @@
 			<div class="panel-heading">
 				<h3 id="musicHeading" class="panel-title">Music Found</h3>
 			</div>
-			<div id="musicPanelBody" class="panel-body"></div>
+			<div class="panel-body">
+				<form>
+					<input id="music-display" type="radio" value="detail" name="musicformat" onClick="musicDisplayChange()" checked>
+					Detail <br> <input type="radio" value="summary" name="musicformat" onClick="musicDisplayChange()">
+					Summary
+				</form>
+				<div id="musicPanelBody"></div>
+			</div>
 		</div>
 	</div>
 	<div class="col-md-12">
