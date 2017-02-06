@@ -440,10 +440,8 @@
 	$(function(){
 		$("#header").load("header.html", "", function(response,status,xhr) {
 			//if (status == "success") { document.getElementById("compositions-nav").setAttribute("class", "active"); };
+			loadCompose();
 		});
-		
-		loadCompose();
-		
 	});
 	
 	var g_musicPanel = null;
