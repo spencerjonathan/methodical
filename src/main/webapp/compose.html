@@ -11,30 +11,41 @@
 		<div class="col-md-6">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<h3 class="panel-title">Enter Composition</h3>
+
+					<label class="panel-title">Enter Composition</label>
+					<button type="button" class="btn btn-sm btn-default"
+						style="float: right" id="composition-help"
+						title="Help with Composition">
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					</button>
+
 
 				</div>
 				<div class="panel-body">
-					<button id="touch_wizard_button" type="button"
-						class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
-					<button id="save_button" type="button"
-						class="btn btn-sm btn-primary" title="Save Composition">
-						<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
-						Save
-					</button>
-					<button type="button" class="btn btn-sm btn-primary"
-						title="Open Composition" onClick="openCompositionDialog()">
-						<span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
-						Open
-					</button>
-					<button type="button" class="btn btn-sm btn-primary" id="submit"
-						title="Submit Composition">
-						<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-						Submit
-					</button>
-					<label> <input id="stop-at-rounds" type="checkbox"
-						checked="true"> Stop at Rounds?
-					</label>
+					<form>
+						<button id="touch_wizard_button" type="button"
+							class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
+						<button id="save_button" type="button"
+							class="btn btn-sm btn-primary" title="Save Composition">
+							<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+							Save
+						</button>
+						<button type="button" class="btn btn-sm btn-primary"
+							title="Open Composition" onClick="openCompositionDialog()">
+							<span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
+							Open
+						</button>
+						<button type="button" class="btn btn-sm btn-primary" id="submit"
+							title="Submit Composition">
+							<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+							Submit
+						</button>
+						<label> <input id="stop-at-rounds" type="checkbox"
+							checked="true"> Stop at Rounds?
+						</label>
+
+
+					</form>
 
 					<textarea id="input" style="width: 100%; height: 300px"></textarea>
 					<br>
@@ -42,16 +53,30 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
+			<div class="panel panel-primary" id="musicDefinitionPanel">
+				<div class="panel-heading" id="musicDefinitionHeading">
 					<h3 class="panel-title">Music Definition</h3>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" id="musicDefinitionBody">
+					<form><label>Select default music</label>
+					<select id="musicDefinitionSelect" onChange="updateMusic()">
+						<option value="5">5-Bell</option>
+						<option value="6">6-Bell</option>
+						<option value="7">7-Bell</option>
+						<option value="8">8-Bell</option>
+						<option value="9">9-Bell</option>
+						<option value="10">10-Bell</option>
+						<option value="11">11-Bell</option>
+						<option value="12">12-Bell</option>
+
+					</select>
+					</form>
 					<textarea id="music-input" style="width: 100%; height: 330px">"Queens" = 13572468
 "Titums" = 15263748
 "Rollup" = 5678$
-"CRU" = [456][456]78
+"CRU" = [456]{2}78$
 "Reverse Rounds" = 87654321
+"Other 4 bell music off back" = (1357$)|(2468$)|(3468$)|(3578$)|(3748$)|(5768$)|(6857$)|(7468$)|(7568$)|(7658$)|(8765$)
 </textarea>
 
 				</div>

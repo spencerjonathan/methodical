@@ -300,6 +300,71 @@
 		this.setHeading(touchTitle);
 	}
 
+	function updateMusic() {
+		g_musicDefinitionPanel.draw();
+	}
+	
+	function MusicDefinitionPanel(p_panel, p_heading, p_body, p_music_text, p_music_select) {
+		GenericPanel.call(this, p_panel, p_heading, p_body);
+		this.music_text = p_music_text;
+		this.music_select = p_music_select;
+		this.music_definition = [];
+		this.setup_music();
+	};
+	
+	MusicDefinitionPanel.prototype = Object.create(GenericPanel.prototype);
+
+	MusicDefinitionPanel.prototype.draw = function(touch) {
+		var music_bells = this.music_select.value;
+		var music = this.music_definition[music_bells]
+		this.music_text.value = music;
+	}
+	
+	MusicDefinitionPanel.prototype.setup_music = function() {
+		this.music_definition[5] = '"Queens" = 13524\n'+
+		'"Titums" = 14253\n'+
+		'"Rollup" = 45$\n'+
+		'"54" = 54$';
+	
+		this.music_definition[6] = '"Queens" = 135246\n'+
+		'"Titums" = 142536\n'+
+		'"Rollup" = 456$\n'+
+		'"546" = 546$';
+		
+		this.music_definition[7] = '"Queens" = 1357246\n' +
+		'"Whittingtons" = 1275346\n' +
+		'"Titums" = 1526374\n' +
+		'"Rollup" = 567$\n' +
+		'"CRU" = [456]{2}7$\n' +
+		'"Reverse Rounds" = 7654321\n' +
+		'"Other 4 bell music off back" = (246$)|(346$)|(357$)|(374$)|(576$)|(746$)|(756$)|(765$)';
+		
+		this.music_definition[8] = '"Queens" = 13572468\n' +
+		'"Whittingtons" = 12753468\n' +
+		'"Titums" = 15263748\n' +
+		'"Rollup" = 5678$\n' +
+		'"CRU" = [456]{2}78$\n' +
+		'"Reverse Rounds" = 87654321\n' +
+		'"Other 4 bell music off back" = (1357$)|(2468$)|(3468$)|(3578$)|(3748$)|(5768$)|(6857$)|(7468$)|(7568$)|(7658$)|(8765$)';
+		
+		this.music_definition[9] = '"Queens" = 135792468\n' +
+		'"Whittingtons" = 3497568$\n' +
+		'"Titums" = 162738495\n' +
+		'"Rollup" = 56789$\n' +
+		'"CRU" = [456]{2}789$\n' +
+		'"Reverse Rounds" = 987654321\n' +
+		'"Other 4 bell music off back" = (468$)|(568$)|(579$)|(596$)|(798$)|(968$)|(978$)|(987$)';
+		
+		this.music_definition[10] = '"Queens" = 1357924680\n' +
+		'"Whittingtons" = 34975680$\n' +
+		'"Titums" = 1627384950\n' +
+		'"Rollup" = 567890$\n' +
+		'"CRU" = [456]{2}7890$\n' +
+		'"Reverse Rounds" = 0987654321\n' +
+		'"Other 4 bell music off back" = (3579$)|(4680$)|(5680$)|(5790$)|(5960$)|(7980$)|(8079$)|(9680$)|(9780$)|(9870$)|(0987$)';
+
+	}
+	
 	function MusicPanel(p_panel, p_heading, p_body) {
 		GenericPanel.call(this, p_panel, p_heading, p_body);
 	};
@@ -444,6 +509,7 @@
 	});
 	
 	var g_musicPanel = null;
+	var g_musicDefinitionPanel = null;
 	
 	var init_compose = function() {
 		var g_touchPanel = new TouchPanel(
@@ -451,6 +517,13 @@
 						.getElementById("touchHeading"), document
 						.getElementById("touchPanelBody"));
 
+		g_musicDefinitionPanel = new MusicDefinitionPanel(
+				document.getElementById("musicDefinitionPanel"), document
+						.getElementById("musicDefinitionHeading"), document
+						.getElementById("musicDefinitionBody"), 
+						document.getElementById("music-input"),
+						document.getElementById("musicDefinitionSelect"));
+		
 		g_musicPanel = new MusicPanel(
 				document.getElementById("musicPanel"), document
 						.getElementById("musicHeading"), document
