@@ -28,8 +28,6 @@ public class LeadEnd {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 		r.add(bo);
 		setRows(r);
-
-		//stampCoursingOrder();
 	}
 
 	public LeadEnd(ArrayList<int[]> rows, Method m, Call c) {
@@ -180,7 +178,7 @@ public class LeadEnd {
 		if (method != null)
 			ret.append(method.getName() + " ");
 
-		ret.append(rowToString(getBell_order()));
+		ret.append(arrayToString(getBell_order()));
 
 		if (call != null) {
 			ret.append(" " + call.getName());
@@ -254,14 +252,10 @@ public class LeadEnd {
 			for (Iterator<String> music_iterator = keys.iterator(); music_iterator.hasNext();) {
 				String music = music_iterator.next();
 				Pattern p = Pattern.compile(music);
-				Matcher m = p.matcher(rowToString(row));
+				Matcher m = p.matcher(arrayToString(row));
 
 				if (m.find()) {
 					String music_name = music_definitions.get(music);
-					/*Integer occurances = 1;
-					if (musical_qualities.containsKey(music_name)) {
-						occurances += musical_qualities.get(music_name);
-					}*/
 					musical_qualities.add(new Music(music_name, row_number, lead_number));
 				}
 
@@ -269,16 +263,6 @@ public class LeadEnd {
 			
 			
 		}
-	}
-
-	private CharSequence rowToString(int[] row) {
-		StringBuilder ret = new StringBuilder();
-
-		for (int i = 0; i < row.length; ++i) {
-			ret.append(row[i]);
-		}
-
-		return ret.toString();
 	}
 
 	private int indexOf(int[] array, int value) {
