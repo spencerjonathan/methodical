@@ -102,15 +102,26 @@ PART WHW = { WH W }</pre>
 						can only define one composition. &nbsp;Otherwise, the same rules
 						apply for defining the COMPOSITION as for a PART.</p>
 					<p>
-						The COMPOSITION declaration is made up of 3 parts:</span>
+						The COMPOSITION declaration is made up of 3 parts:
 					</p>
 					<ul>
 						<li>the keyword "COMPOSITION"</li>
 						<li>the equals sign "="<br></li>
-						<li">the list of METHOD, CALL and PART aliases that make up
+						<li>the list of METHOD, CALL and PART aliases that make up
 							the composition surrounded by brackets { }</li>
 					</ul>
 					<pre>COMPOSITION = { M1 P1 }</pre>
+					
+					<p>The following is an example of how you could define a 720 WHW x 3 touch of Cambridge Surprise Minor:</p>
+					<pre>METHOD M1 = "Cambridge Surprise Minor"
+
+CALL B = 14
+CALL S = 1234
+
+PART WH = { P P B P B }
+PART W = { P P B P P }
+PART WHW = { WH W }
+COMPOSITION = { M1 WHW WHW WHW }</pre>
 
 				</div>
 			</div>
