@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Methodical Help</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../bootstrap-3.3.7-dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Bootstrap theme -->
+<link href="../bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"
+	rel="stylesheet">
+
+</head>
+<script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<body>
+	<div class="bs-docs-header jumbotron" id=content tabindex=-1>
+		<div class=container>
+			<h1>Methodical Help</h1>
+			<p>Help with using the Methodical Web Application.</p>
+		</div>
+	</div>
+
+	<div class="container bs-docs-container">
+		<div class=row>
+			<div class=col-md-9 role=main>
+				<div class=bs-docs-section>
+					<h1 class=page-header id=overview>Composition</h1>
+					<p class=lead>Instructions on how to define compositions in
+						Methodical.</p>
+					<h2 id=overview-doctype>Structure of a Composition Definition</h2>
+					<p>The composition is made up of 4 types of declaration,
+						"METHOD"s, "CALL"s, "PART"s and the "COMPOSITION":</p>
+					<pre>METHOD M1 = "Cambridge Surprise Minor"
+
+CALL B = 14
+CALL S = 1234
+
+PART P1 = { P P P P P }
+COMPOSITION = { M1 P1 }</pre>
+
+					<p>Let's look at these parts in more detail.</p>
+					<h3>Declaring a METHOD</h3>
+					<p>A Method declaration is made up of 4 parts:</p>
+					<ul>
+						<li>the keyword "METHOD"</li>
+						<li>the name of Method alias that we are declaring</li>
+						<li>the equals sign "="</li>
+						<li>the title of the method surrounded by double quotes</li>
+					</ul>
+					<pre>METHOD M1 = "Cambridge Surprise Minor"</pre>
+					<p>In our example above we are declaring one Method. It is
+						"Cambridge Surprise Minor" and we're giving it the alias "M1"</p>
+					<p>Each alias must be unique and consists of a letter followed
+						by 0 or more letters or numbers
+					<p>
+					<h3>Declaring a CALL</h3>
+					<p>A Call declaration is made up of 4 parts:</p>
+					<ul>
+						<li>the keyword "CALL"</li>
+						<li>the name of Call alias that we are declaring</li>
+						<li>the equals sign "="</li>
+						<li>the place notation of the call</li>
+					</ul>
+
+					<pre>CALL B = 14
+CALL S = 1234</pre>
+					<p>In our example above we are declaring 2 calls. One has alias
+						"B" and place notation 14, and the second has alias "S" and place
+						notation 1234.</p>
+					<p>One special call is already defined for us with alias "P".
+						This represents a plain lead with no call at the end. It is not
+						possible to declare and Method, Call or Part aliases with
+						identifier "P"</p>
+					<p>Each alias must be unique and consists of a letter followed
+						by 0 or more letters or numbers
+					<p>
+					<h3>Declaring a PART</h3>
+					<p>Part declarations provide a short-hand for writing out the
+						composition in full. They allow you to give a sequence of Method
+						changes and Calls an alias. The example below shows the
+						declaration for 5 plain leads:</p>
+					<pre>PART PLAINCOURSE = { P P P P P }</pre>
+
+
+					<p>Parts can be nested - that is, a Part can contain one or
+						more other parts. The example below shows nested Part
+						declarations:</p>
+
+					<pre>PART WH = { P P B P B }
+PART W = { P P B P P }
+PART WHW = { WH W }</pre>
+
+					<p>It is not necessary to have any Parts. A valid composition
+						definition could consist of only a "METHOD" declaration and a
+						"COMPOSITION" declaration.
+					<h3>Declaring a COMPOSITION</h3>
+					<p>The COMPOSITION is a special PART in that it is the
+						definition of the composition to be processed by Methodical when
+						you click Submit. &nbsp;The syntax for defining the COMPOSITION is
+						slightly different in that we don't give it an alias. &nbsp;You
+						can only define one composition. &nbsp;Otherwise, the same rules
+						apply for defining the COMPOSITION as for a PART.</p>
+					<p>
+						The COMPOSITION declaration is made up of 3 parts:</span>
+					</p>
+					<ul>
+						<li>the keyword "COMPOSITION"</li>
+						<li>the equals sign "="<br></li>
+						<li">the list of METHOD, CALL and PART aliases that make up
+							the composition surrounded by brackets { }</li>
+					</ul>
+					<pre>COMPOSITION = { M1 P1 }</pre>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

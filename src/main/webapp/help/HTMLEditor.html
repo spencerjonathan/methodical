@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
+  <script>
+            function update() {
+                        var i =   tinyMCE.activeEditor.getContent({format : 'raw'});
+console.log(i);
+            };
+</script>
+</head>
+<body>
+  <textarea id=input onkeyup="update()">Easy! You should check out MoxieManager!</textarea>
+  <button onclick="update()">Update</button>
+<pre id=output></pre>
+ 
+</body>
+</html>
