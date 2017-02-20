@@ -151,4 +151,29 @@ public class MethodsControllerTest extends BaseTest {
 				leads[2].getBell_order().equals("123465"));
 
 	}
+
+	@Test
+	@Category(uk.co.methodical.IntegrationTests.class)
+	public void methodsControllerCanCreateTouchWithDifferentStagesAndCalls() {
+		MethodsController controller = new MethodsController();
+
+		ParseRequest request = new ParseRequest();
+
+		String composition = "METHOD PB = \"Cambridge Surprise Minor\" \nMETHOD G = \"Grandsire Doubles\" \nCALL GBOB = 3.1 \nCALL SPB = 16 \nPART P1 = { PB P P P G GBOB PB P P G GBOB PB P P G GBOB PB P SPB } \nCOMPOSITION = { P1 }";
+		String music = "\"Queens\" = 135246\n\"Titums\" = 142536\n\"Rollup\" = 456$";
+
+		request.setComposition(composition);
+		request.setMusic(music);
+
+		TouchListItem response = null;
+
+		response = (TouchListItem) controller.parse(request);
+
+		Lead[] leads = response.getLeads();
+
+		Assert.assertTrue("MethodsController can create touch of Cambridge Surprise Minor and Grandsire Doubles with Grandsire Bobs", true);
+
+	}
+	
+	
 }

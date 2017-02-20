@@ -277,6 +277,14 @@ public class LeadEnd {
 	public void stampCoursingOrder() {
 		int stage = this.method.getNumber_of_bells();
 		int start_position = indexOf(this.getBell_order(), stage);
+		
+		if (start_position >= stage || start_position < method.getNumber_of_hunts()) {
+			coursing_order = null;
+			return;
+		}
+		
+		
+		
 		System.out.print("Method = " + method.getName() + "; Number of Hunts = " + method.getNumber_of_hunts() + "; Start Position = " + start_position + "; and stage is " + stage + "; and Bell Order is ");
 		for (int num : this.getBell_order()) {
 			System.out.print(num);
