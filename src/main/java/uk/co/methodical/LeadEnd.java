@@ -252,11 +252,12 @@ public class LeadEnd {
 			for (Iterator<String> music_iterator = keys.iterator(); music_iterator.hasNext();) {
 				String music = music_iterator.next();
 				Pattern p = Pattern.compile(music);
-				Matcher m = p.matcher(arrayToString(row));
+				String row_as_string = arrayToString(row);
+				Matcher m = p.matcher(row_as_string);
 
 				if (m.find()) {
 					String music_name = music_definitions.get(music);
-					musical_qualities.add(new Music(music_name, row_number, lead_number));
+					musical_qualities.add(new Music(music_name, row_number, lead_number, row_as_string));
 				}
 
 			}

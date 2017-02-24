@@ -392,10 +392,10 @@
 		}
 		
 		if (document.getElementById("music-display").checked) {
-			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row</th></tr></thead><tbody>';
+			innerHTML = '<table class="table" style="width: 0%;"><thead><tr><th>Music</th><th>Lead</th><th>Row Number</th><th>Row</th></tr></thead><tbody>';
 		
 			music.forEach(function(m) {
-				innerHTML += "<tr><td>" + m.music_name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number
+				innerHTML += "<tr><td>" + m.music_name + "</td><td>" + m.lead_number + "</td><td>" + m.row_number+ "</td><td>" + m.row
 						+ "</td></tr>";
 
 			});

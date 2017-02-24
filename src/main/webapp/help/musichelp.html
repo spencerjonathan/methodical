@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Methodical Help - Music</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../bootstrap-3.3.7-dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Bootstrap theme -->
+<link href="../bootstrap-3.3.7-dist/css/bootstrap-theme.min.css"
+	rel="stylesheet">
+
+</head>
+<script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<body>
+	<div class="bs-docs-header jumbotron" id=content tabindex=-1>
+		<div class=container>
+			<h1>Methodical Help</h1>
+			<p>Help with using the Methodical Web Application.</p>
+		</div>
+	</div>
+
+	<div class="container bs-docs-container">
+		<div class=row>
+			<div class=col-md-9 role=main>
+				<div class=bs-docs-section>
+					<h1 class=page-header id=overview>Music Definitions</h1>
+					<p class=lead>Instructions on how to define music that you'd
+						like Methodical to identify in your composition.</p>
+					<h2 id=overview-doctype>Structure of the Music Definition</h2>
+					<p>The music definition is simply a list of declarations. See
+						below an example of music defined for a touch on 6 bells:</p>
+					<pre>"Queens" = 135246
+"Titums" = 142536
+"Rollup" = 456$
+"546" = 546$</pre>
+					<p>A music declaration is made up of 3 parts:</p>
+					<ul>
+						<li>the name of music alias that we are declaring surrounded
+							by double quotes</li>
+						<li>the equals sign "="</li>
+						<li>the music that you're looking for expressed in
+							regular-expression notation</li>
+					</ul>
+					<p>
+						A regular expression (regex or regexp for short) is a special text
+						string for describing a search pattern. You can think of regular
+						expressions as wildcards on steroids. Some examples with
+						explanations are provided in the next section below. To find out
+						more about regular expressions there is plenty of information
+						available on the internet. Try <a
+							href="http://www.regular-expressions.info/quickstart.html"
+							target="_blank">this</a> for starters.
+					</p>
+					<h2 id=overview-doctype>Examples of Music Declarations</h2>
+
+					<p>The most basic regular expression consists of a series of
+						literal characters, such as 456. Methodical will match any row
+						created by your composition where 456 appear in that order.</p>
+					<pre>"My Music" = 456</pre>
+					<p>
+						The music declaration given here will match the following rows:
+						123<strong>456</strong>, <strong>456</strong>321 and 3<strong>456</strong>12
+					</p>
+					<pre>"My Music" = 456$</pre>
+					<p>The $ character matches the end of a row, and ^ matches the
+						start of a row, so if you wanted to define music that starts with
+						1234 you'd define your music as:</p>
+					<pre>"1234 at start" = ^1234</pre>
+					<p>and if you wanted to define music that ends with 1234 you
+						define your music as:</p>
+					<pre>"1234 at end" = 1234$</pre>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

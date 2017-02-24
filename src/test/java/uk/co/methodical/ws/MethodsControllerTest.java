@@ -82,14 +82,14 @@ public class MethodsControllerTest extends BaseTest {
 
 		List<Music> correct_music = new ArrayList<Music>();
 
-		correct_music.add(new Music("\"Rollup\"", 9, 4));
-		correct_music.add(new Music("\"Rollup\"", 1, 5));
-		correct_music.add(new Music("\"Rollup\"", 7, 5));
-		correct_music.add(new Music("\"Titums\"", 9, 10));
-		correct_music.add(new Music("\"Queens\"", 10, 11));
-		correct_music.add(new Music("\"Rollup\"", 2, 12));
-		correct_music.add(new Music("\"Rollup\"", 8, 12));
-		correct_music.add(new Music("\"Rollup\"", 10, 12));
+		correct_music.add(new Music("\"Rollup\"", 9, 4, "13245"));
+		correct_music.add(new Music("\"Rollup\"", 1, 5, "31245"));
+		correct_music.add(new Music("\"Rollup\"", 7, 5, "23145"));
+		correct_music.add(new Music("\"Titums\"", 9, 10, "14253"));
+		correct_music.add(new Music("\"Queens\"", 10, 11, "13524"));
+		correct_music.add(new Music("\"Rollup\"", 2, 12, "32145"));
+		correct_music.add(new Music("\"Rollup\"", 8, 12, "21345"));
+		correct_music.add(new Music("\"Rollup\"", 10, 12, "12345"));
 
 		Music[] correct_music_array = correct_music.toArray(new Music[correct_music.size()]);
 		

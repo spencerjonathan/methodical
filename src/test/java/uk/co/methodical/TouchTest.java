@@ -58,13 +58,13 @@ public class TouchTest extends BaseTest {
 
 		Music[] expected_music = new Music[7];
 		
-		expected_music[0] = new Music("546$", 11, 1);
-		expected_music[1] = new Music("546", 11, 1);
-		expected_music[2] = new Music("123564", 12, 1);
-		expected_music[3] = new Music("546", 11, 7);
-		expected_music[4] = new Music("546", 4, 9);
-		expected_music[5] = new Music("546", 6, 10);
-		expected_music[6] = new Music("123456", 12, 10);
+		expected_music[0] = new Music("546$", 11, 1, "132546");
+		expected_music[1] = new Music("546", 11, 1, "132546");
+		expected_music[2] = new Music("123564", 12, 1, "123564");
+		expected_music[3] = new Music("546", 11, 7, "154632");
+		expected_music[4] = new Music("546", 4, 9, "546312");
+		expected_music[5] = new Music("546", 6, 10, "546321");
+		expected_music[6] = new Music("123456", 12, 10, "123456");
 
 		
 		List<Music> music = touch.getMusicalQualities(music_definitions);
