@@ -1,3 +1,3 @@
-mysql --user=root --password=fred12 < src/methodical_structure.sql
-mysql --user=root --password=fred12 < src/methodical_data.sql  
-mysql --user=root --password=fred12 < src/methodical_modifiers.sql
+mysql --user=root --password=tbc < src/methodical_structure.sql
+mysql --user=root --password=tbc < src/methodical_data.sql  
+mysql --user=root --password=tbc < src/methodical_modifiers.sql

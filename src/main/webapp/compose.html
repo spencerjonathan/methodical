@@ -12,69 +12,72 @@
 			<div class="panel panel-info">
 				<div class="panel-heading">
 
-					<label class="panel-title">Enter Composition</label>
-					<a type="button" class="btn btn-sm btn-default"
-						style="float: right" id="composition-help"
-						title="Help with Composition" href="./help/index.html" target="_blank">
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<label class="panel-title">Enter Composition</label> <a
+						type="button" class="btn btn-sm btn-default" style="float: right"
+						id="composition-help" title="Help with Composition"
+						href="./help/index.html" target="_blank"> <span
+						class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 					</a>
 
 
 				</div>
 				<div class="panel-body">
-					<form>
-						<button id="touch_wizard_button" type="button"
-							class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
-						<button id="save_button" type="button"
-							class="btn btn-sm btn-primary" title="Save Composition">
-							<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
-							Save
-						</button>
-						<button type="button" class="btn btn-sm btn-primary"
-							title="Open Composition" onClick="openCompositionDialog()">
-							<span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
-							Open
-						</button>
-						<button type="button" class="btn btn-sm btn-primary" id="submit"
-							title="Submit Composition">
-							<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-							Submit
-						</button>
-						<label> <input id="stop-at-rounds" type="checkbox"
-							checked="true"> Stop at Rounds?
-						</label>
+					<div>
+						<form>
+							<button id="touch_wizard_button" type="button"
+								class="btn btn-sm btn-primary">Touch Wizard &raquo;</button>
+							<button id="save_button" type="button"
+								class="btn btn-sm btn-primary" title="Save Composition">
+								<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+								Save
+							</button>
+							<button type="button" class="btn btn-sm btn-primary"
+								title="Open Composition" onClick="openCompositionDialog()">
+								<span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span>
+								Open
+							</button>
+							<button type="button" class="btn btn-sm btn-primary" id="submit"
+								title="Submit Composition">
+								<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+								Submit
+							</button>
+							<label> <input id="stop-at-rounds" type="checkbox"
+								checked="true"> Stop at Rounds?
+							</label>
 
 
-					</form>
-
-					<textarea id="input" style="width: 100%; height: 300px"></textarea>
-					<br>
+						</form>
+					</div>
+					<div>
+						<textarea id="input" style="width: 100%; height: 300px"></textarea>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-6">
 			<div class="panel panel-primary" id="musicDefinitionPanel">
 				<div class="panel-heading" id="musicDefinitionHeading">
-					<label class="panel-title">Music Definition</label>
-					<a type="button" class="btn btn-sm btn-default"
-						style="float: right" id="composition-help"
-						title="Help with Composition" href="./help/musichelp.html" target="_blank">
-						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<label class="panel-title">Music Definition</label> <a
+						type="button" class="btn btn-sm btn-default" style="float: right"
+						id="composition-help" title="Help with Composition"
+						href="./help/musichelp.html" target="_blank"> <span
+						class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 					</a>
 				</div>
 				<div class="panel-body" id="musicDefinitionBody">
-					<form><label>Select default music</label>
-					<select id="musicDefinitionSelect" onChange="updateMusic()">
-						<option value="5">5-Bell</option>
-						<option value="6">6-Bell</option>
-						<option value="7">7-Bell</option>
-						<option value="8">8-Bell</option>
-						<option value="9">9-Bell</option>
-						<option value="10">10-Bell</option>
-						<option value="11">11-Bell</option>
-						<option value="12">12-Bell</option>
+					<form>
+						<label>Select default music</label> <select
+							id="musicDefinitionSelect" onChange="updateMusic()">
+							<option value="5">5-Bell</option>
+							<option value="6">6-Bell</option>
+							<option value="7">7-Bell</option>
+							<option value="8">8-Bell</option>
+							<option value="9">9-Bell</option>
+							<option value="10">10-Bell</option>
+							<option value="11">11-Bell</option>
+							<option value="12">12-Bell</option>
 
-					</select>
+						</select>
 					</form>
 					<textarea id="music-input" style="width: 100%; height: 330px"></textarea>
 
@@ -100,6 +103,7 @@
 					<h3 id="musicHeading" class="panel-title">Music Found</h3>
 				</div>
 				<div class="panel-body">
+
 					<form>
 						<input id="music-display" type="radio" value="detail"
 							name="musicformat" onClick="musicDisplayChange()" checked>
